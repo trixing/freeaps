@@ -32,6 +32,7 @@ extension AddCarbs {
                         Text("grams").foregroundColor(.secondary)
                     }
                     DatePicker("Date", selection: $state.date)
+                        .disabled(true)
                 }
 
                 Section {

@@ -39,13 +39,8 @@ extension Bolus {
 
             let maxAmount = Double(min(amount, provider.pumpSettings().maxBolus))
 
-            unlockmanager.unlock()
-                .sink { _ in } receiveValue: { [weak self] _ in
-                    guard let self = self else { return }
-                    self.apsManager.enactBolus(amount: maxAmount, isSMB: false)
-                    self.showModal(for: nil)
-                }
-                .store(in: &lifetime)
+            apsManager.enactBolus(amount: maxAmount, isSMB: false)
+            showModal(for: nil)
         }
 
         func addWithoutBolus() {
@@ -77,6 +72,7 @@ extension Bolus {
                 self.inslinRequired = self.provider.suggestion?.insulinReq ?? 0
                 self.inslinRecommended = self.apsManager
                     .roundBolus(amount: max(self.inslinRequired * self.settingsManager.settings.insulinReqFraction, 0))
+                self.amount = self.inslinRecommended
             }
         }
     }
