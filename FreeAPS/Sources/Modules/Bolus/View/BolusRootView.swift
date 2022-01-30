@@ -54,24 +54,26 @@ extension Bolus {
 
                 if !state.waitForSuggestion {
                     Section(header: Text("Bolus")) {
-                        HStack {
-                            Text("Amount")
-                            Spacer()
-                            DecimalTextField(
-                                "0",
-                                value: $state.amount,
-                                formatter: formatter,
-                                autofocus: true,
-                                cleanInput: true
-                            )
-                            Text("U").foregroundColor(.secondary)
+                        VStack {
+                            HStack {
+                                Text("Amount")
+                                Spacer()
+                                DecimalTextField(
+                                    "0",
+                                    value: $state.amount,
+                                    formatter: formatter,
+                                    autofocus: true,
+                                    cleanInput: true
+                                )
+                                Text("U").foregroundColor(.secondary)
+                            }
+                            HStack {
+                                Button { state.add() }
+                                label: { Text("Enact bolus") }
+                                    .disabled(state.amount <= 0 || state.amount > state.inslinRequired)
+                                Spacer()
+                            }
                         }
-                    }
-
-                    Section {
-                        Button { state.add() }
-                        label: { Text("Enact bolus") }
-                            .disabled(state.amount <= 0 || state.amount > state.inslinRequired)
                     }
                     /*
                      Section {
@@ -124,5 +126,11 @@ struct ActivityIndicator: UIViewRepresentable {
 
     func updateUIView(_ uiView: UIActivityIndicatorView, context _: UIViewRepresentableContext<ActivityIndicator>) {
         isAnimating ? uiView.startAnimating() : uiView.stopAnimating()
+    }
+}
+
+struct Previews_BolusRootView_Previews: PreviewProvider {
+    static var previews: some View {
+        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
     }
 }
