@@ -17,7 +17,8 @@ extension Bolus {
 
         var body: some View {
             Form {
-                Section(header: Text("Recommendation")) {
+                // Section(header: Text("Recommendation")) {
+                Section {
                     if state.waitForSuggestion {
                         HStack {
                             Text("Wait please").foregroundColor(.secondary)
@@ -49,31 +50,38 @@ extension Bolus {
                             .onTapGesture {
                                 state.amount = state.inslinRecommended
                             }
-                    }
-                }
+                        // }
+                        // }
 
-                if !state.waitForSuggestion {
-                    Section(header: Text("Bolus")) {
-                        VStack {
-                            HStack {
-                                Text("Amount")
-                                Spacer()
-                                DecimalTextField(
-                                    "0",
-                                    value: $state.amount,
-                                    formatter: formatter,
-                                    autofocus: true,
-                                    cleanInput: true
-                                )
-                                Text("U").foregroundColor(.secondary)
-                            }
-                            HStack {
+                        // if !state.waitForSuggestion {
+                        //    Section(header: Text("Bolus")) {
+
+                        //   VStack {
+                        HStack {
+                            Text("Amount")
+                            Spacer()
+                            DecimalTextField(
+                                "0",
+                                value: $state.amount,
+                                formatter: formatter,
+                                autofocus: true,
+                                cleanInput: true
+                            )
+                            Text("U").foregroundColor(.secondary)
+                        }
+                        HStack {
+                            if state.amount > 0 {
                                 Button { state.add() }
                                 label: { Text("Enact bolus") }
-                                    .disabled(state.amount <= 0 || state.amount > state.inslinRequired)
-                                Spacer()
+                                    .disabled(state.amount > state.inslinRequired)
+                            } else {
+                                Button { state.hideModal() } // happens to handle amount = 0 fine
+                                label: { Text("Skip bolus") }
                             }
+                            Spacer()
                         }
+                        //      }
+                        //   }
                     }
                     /*
                      Section {
