@@ -1879,6 +1879,7 @@
 			buildPhases = (
 				38E8751A27554D5500975559 /* Resources */,
 				38E8754027554D5900975559 /* Embed App Extensions */,
+				499C0E9127A9E7FD00F3CFCA /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1897,6 +1898,7 @@
 				38E8752027554D5700975559 /* Sources */,
 				38E8752127554D5700975559 /* Frameworks */,
 				38E8752227554D5700975559 /* Resources */,
+				499C0E9227A9E80B00F3CFCA /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2077,7 +2079,41 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nGIT_RELEASE_VERSION=$(git describe --tags --always --dirty)\nCOMMITS=$(git rev-list HEAD | wc -l)\nCOMMITS=$(($COMMITS))\n# defaults write \"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH%.*}\" \"CFBundleShortVersionString\" \"${GIT_RELEASE_VERSION#*v}\"\n# defaults write \"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH%.*}\" \"CFBundleVersion\" \"${COMMITS}\"\n";
+			shellScript = "GIT_RELEASE_VERSION=$(git describe --tags --always --dirty)\nGIT_RELEASE_VERSION=${GIT_RELEASE_VERSION#*v}\nCOMMITS=$(git rev-list --count HEAD)\nCOMMITS=$(($COMMITS))\ndefaults write \"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH%.*}\" \"CFBundleShortVersionString\" \"${GIT_RELEASE_VERSION}\"\ndefaults write \"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH%.*}\" \"CFBundleVersion\" \"${COMMITS}\"\n\nWATCHINFO=\"${BUILT_PRODUCTS_DIR}/../${CONFIGURATION}-watchos/FreeAPSWatch WatchKit Extension.appex/Info.plist\"\n\n/usr/libexec/PlistBuddy -c \"Set :CFBundleShortVersionString ${GIT_RELEASE_VERSION}\" \"${WATCHINFO}\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion ${COMMITS}\" \"${WATCHINFO}\"\n\n";
+		};
+		499C0E9127A9E7FD00F3CFCA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "GIT_RELEASE_VERSION=$(git describe --tags --always --dirty)\nGIT_RELEASE_VERSION=${GIT_RELEASE_VERSION#*v}\nCOMMITS=$(git rev-list --count HEAD)\nCOMMITS=$(($COMMITS))\ndefaults write \"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH%.*}\" \"CFBundleShortVersionString\" \"${GIT_RELEASE_VERSION}\"\ndefaults write \"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH%.*}\" \"CFBundleVersion\" \"${COMMITS}\"\n";
+		};
+		499C0E9227A9E80B00F3CFCA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "GIT_RELEASE_VERSION=$(git describe --tags --always --dirty)\nGIT_RELEASE_VERSION=${GIT_RELEASE_VERSION#*v}\nCOMMITS=$(git rev-list --count HEAD)\nCOMMITS=$(($COMMITS))\ndefaults write \"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH%.*}\" \"CFBundleShortVersionString\" \"${GIT_RELEASE_VERSION}\"\ndefaults write \"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH%.*}\" \"CFBundleVersion\" \"${COMMITS}\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
