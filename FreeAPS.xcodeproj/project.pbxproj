@@ -1854,6 +1854,7 @@
 				388E595625AD948C0019842D /* Resources */,
 				3821ECD025DC703C00BC42AD /* Embed Frameworks */,
 				38E8753D27554D5900975559 /* Embed Watch Content */,
+				499C0E9027A915F400F3CFCA /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2060,6 +2061,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "source \"${SRCROOT}\"/scripts/swiftformat.sh\n\n";
+		};
+		499C0E9027A915F400F3CFCA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nGIT_RELEASE_VERSION=$(git describe --tags --always --dirty)\nCOMMITS=$(git rev-list HEAD | wc -l)\nCOMMITS=$(($COMMITS))\ndefaults write \"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH%.*}\" \"CFBundleShortVersionString\" \"${GIT_RELEASE_VERSION#*v}\"\ndefaults write \"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH%.*}\" \"CFBundleVersion\" \"${COMMITS}\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
