@@ -30,7 +30,13 @@ final class BaseFileStorage: FileStorage {
 
     func retrieve<Value: JSON>(_ name: String, as type: Value.Type) -> Value? {
         processQueue.safeSync {
-            try? Disk.retrieve(name, from: .documents, as: type, decoder: JSONCoding.decoder)
+            do {
+                return try Disk.retrieve(name, from: .documents, as: type, decoder: JSONCoding.decoder)
+
+            } catch {
+                // NSLog("JS Decode error \(name)")  //: \(error)
+                return nil
+            }
         }
     }
 
