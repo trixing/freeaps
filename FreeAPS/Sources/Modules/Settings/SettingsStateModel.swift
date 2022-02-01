@@ -17,7 +17,8 @@ extension Settings {
 
             broadcaster.register(SettingsObserver.self, observer: self)
 
-            buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "Unknown"
+            buildNumber = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? Bundle.main
+                .infoDictionary?["CFBundleVersion"] as? String ?? "Unknown"
 
             subscribeSetting(\.animatedBackground, on: $animatedBackground) { animatedBackground = $0 }
         }
