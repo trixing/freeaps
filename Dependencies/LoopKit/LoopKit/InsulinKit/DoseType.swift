@@ -48,7 +48,7 @@ extension DoseType {
             self = .suspend
         case .tempBasal:
             self = .tempBasal
-        case .alarm, .alarmClear, .prime, .rewind:
+        case .alarm, .alarmClear, .prime, .rewind, .battery:
             return nil
         }
     }

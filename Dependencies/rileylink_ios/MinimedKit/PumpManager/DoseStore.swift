@@ -97,6 +97,18 @@ extension Collection where Element == TimestampedHistoryEvent {
                     dose = DoseEntry(resumeDate: event.date)
                 }
                 break
+            case let battery as BatteryPumpEvent:
+                NSLog("Battery Change \(battery)")
+                eventType = .battery
+                break
+            case let alarm as JournalEntryPumpLowBatteryPumpEvent:
+                NSLog("Low Battery \(alarm)")
+                eventType = .alarm
+                break
+            case let alarm as JournalEntryPumpLowReservoirPumpEvent:
+                NSLog("Low Reservoir \(alarm)")
+                eventType = .alarm
+                break
             default:
                 break
             }

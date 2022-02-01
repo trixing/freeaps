@@ -20,6 +20,7 @@ public enum PumpEventType: String {
     case rewind     = "Rewind"
     case suspend    = "PumpSuspend"
     case tempBasal  = "TempBasal"
+    case battery    = "BatteryChange"
 }
 
 
@@ -50,6 +51,8 @@ extension PumpEventType {
             return 8
         case .basal:
             return 9
+        case .battery:
+            return 10
         }
     }
 }
@@ -61,7 +64,7 @@ extension PumpEventType {
     }
 
     static var nonDoseTypes: [PumpEventType] {
-        return [.alarm, .alarmClear, .prime, .rewind]
+        return [.alarm, .alarmClear, .prime, .rewind, .battery]
     }
     
 }

@@ -145,6 +145,15 @@ final class BasePumpHistoryStorage: PumpHistoryStorage, Injectable {
                             note: event.title
                         )
                     ]
+                case .battery:
+                    return [
+                        PumpHistoryEvent(
+                            id: id,
+                            type: .pumpBattery,
+                            timestamp: event.date,
+                            note: event.title
+                        )
+                    ]
                 default:
                     return []
                 }
@@ -317,7 +326,24 @@ final class BasePumpHistoryStorage: PumpHistoryStorage, Injectable {
                     enteredBy: NigtscoutTreatment.local,
                     bolus: nil,
                     insulin: nil,
-                    notes: "Alarm \(String(describing: event.note)) \(event.type)",
+                    notes: "\(String(describing: event.title)) \(String(describing: event.note)) \(event.type)",
+                    carbs: nil,
+                    targetTop: nil,
+                    targetBottom: nil
+                )
+            case .pumpBattery:
+                return NigtscoutTreatment(
+                    duration: nil,
+                    rawDuration: nil,
+                    rawRate: nil,
+                    absolute: nil,
+                    rate: nil,
+                    eventType: .nsBatteryChange,
+                    createdAt: event.timestamp,
+                    enteredBy: NigtscoutTreatment.local,
+                    bolus: nil,
+                    insulin: nil,
+                    notes: "\(String(describing: event.title))",
                     carbs: nil,
                     targetTop: nil,
                     targetBottom: nil
