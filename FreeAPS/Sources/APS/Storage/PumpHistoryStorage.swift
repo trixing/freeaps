@@ -172,6 +172,7 @@ final class BasePumpHistoryStorage: PumpHistoryStorage, Injectable {
                         ]
                     } else {
                         NSLog("Cannot decode BGReceivedPumpEvent event \(event)")
+                        return []
                     }
                 default:
                     return []
