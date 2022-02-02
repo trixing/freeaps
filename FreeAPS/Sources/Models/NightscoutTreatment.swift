@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 struct NigtscoutTreatment: JSON, Hashable, Equatable {
     var duration: Int?
@@ -15,8 +16,11 @@ struct NigtscoutTreatment: JSON, Hashable, Equatable {
     var carbs: Decimal?
     let targetTop: Decimal?
     let targetBottom: Decimal?
+    var glucoseType: String? = nil
+    var units: String? = nil
+    var glucose: Decimal? = nil
 
-    static let local = "freeaps-x"
+    static let local = "freeaps-x://" + UIDevice.current.name
 
     static let empty = NigtscoutTreatment(from: "{}")!
 
@@ -45,5 +49,8 @@ extension NigtscoutTreatment {
         case carbs
         case targetTop
         case targetBottom
+        case glucoseType
+        case units
+        case glucose
     }
 }

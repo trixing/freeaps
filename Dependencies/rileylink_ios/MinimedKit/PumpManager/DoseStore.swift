@@ -109,6 +109,10 @@ extension Collection where Element == TimestampedHistoryEvent {
                 NSLog("Low Reservoir \(alarm)")
                 eventType = .alarm
                 break
+            case let bgCheck as BGReceivedPumpEvent:
+                NSLog("BG Received \(bgCheck)")
+                eventType = .bgCheck
+                break
             default:
                 break
             }

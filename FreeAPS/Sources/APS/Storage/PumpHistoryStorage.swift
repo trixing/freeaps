@@ -2,6 +2,7 @@ import Foundation
 import LoopKit
 import SwiftDate
 import Swinject
+import MinimedKit
 
 protocol PumpHistoryObserver {
     func pumpHistoryDidUpdate(_ events: [PumpHistoryEvent])
@@ -20,6 +21,8 @@ final class BasePumpHistoryStorage: PumpHistoryStorage, Injectable {
     private let processQueue = DispatchQueue(label: "BasePumpHistoryStorage.processQueue")
     @Injected() private var storage: FileStorage!
     @Injected() private var broadcaster: Broadcaster!
+    @Injected() private var settingsManager: SettingsManager!
+
 
     init(resolver: Resolver) {
         injectServices(resolver)
@@ -154,6 +157,22 @@ final class BasePumpHistoryStorage: PumpHistoryStorage, Injectable {
                             note: event.title
                         )
                     ]
+                case .bgCheck:
+                    if let bg = BGReceivedPumpEvent(
+                        availableData: event.raw,
+                        pumpModel: PumpModel.model754) {
+                    return [
+                        PumpHistoryEvent(
+                            id: id,
+                            type: .pumpBGCheck,
+                            timestamp: event.date,
+                            note: bg.meter,
+                            glucose: Decimal(bg.amount)
+                        )
+                    ]
+                    } else {
+                        NSLog("Cannot decode BGReceivedPumpEvent event \(event)")
+                    }
                 default:
                     return []
                 }
@@ -330,6 +349,26 @@ final class BasePumpHistoryStorage: PumpHistoryStorage, Injectable {
                     carbs: nil,
                     targetTop: nil,
                     targetBottom: nil
+                )
+            case .pumpBGCheck:
+                return NigtscoutTreatment(
+                    duration: nil, // minutes
+                    rawDuration: nil,
+                    rawRate: nil,
+                    absolute: nil,
+                    rate: nil,
+                    eventType: .nsBGCheck,
+                    createdAt: event.timestamp,
+                    enteredBy: NigtscoutTreatment.local,
+                    bolus: nil,
+                    insulin: nil,
+                    notes: "\(String(describing: event.title)) \(String(describing: event.note)) \(event.type)",
+                    carbs: nil,
+                    targetTop: nil,
+                    targetBottom: nil,
+                    glucoseType: "Meter",
+                    units: String(describing: settingsManager.settings.units),
+                    glucose: event.glucose
                 )
             case .pumpBattery:
                 // In testing with Medtronic this creates an
