@@ -1,8 +1,8 @@
 import Foundation
 import LoopKit
+import MinimedKit
 import SwiftDate
 import Swinject
-import MinimedKit
 
 protocol PumpHistoryObserver {
     func pumpHistoryDidUpdate(_ events: [PumpHistoryEvent])
@@ -22,7 +22,6 @@ final class BasePumpHistoryStorage: PumpHistoryStorage, Injectable {
     @Injected() private var storage: FileStorage!
     @Injected() private var broadcaster: Broadcaster!
     @Injected() private var settingsManager: SettingsManager!
-
 
     init(resolver: Resolver) {
         injectServices(resolver)
@@ -160,16 +159,17 @@ final class BasePumpHistoryStorage: PumpHistoryStorage, Injectable {
                 case .bgCheck:
                     if let bg = BGReceivedPumpEvent(
                         availableData: event.raw,
-                        pumpModel: PumpModel.model754) {
-                    return [
-                        PumpHistoryEvent(
-                            id: id,
-                            type: .pumpBGCheck,
-                            timestamp: event.date,
-                            note: bg.meter,
-                            glucose: Decimal(bg.amount)
-                        )
-                    ]
+                        pumpModel: PumpModel.model754
+                    ) {
+                        return [
+                            PumpHistoryEvent(
+                                id: id,
+                                type: .pumpBGCheck,
+                                timestamp: event.date,
+                                note: bg.meter,
+                                glucose: Decimal(bg.amount)
+                            )
+                        ]
                     } else {
                         NSLog("Cannot decode BGReceivedPumpEvent event \(event)")
                     }
