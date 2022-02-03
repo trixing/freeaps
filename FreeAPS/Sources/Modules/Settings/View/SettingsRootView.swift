@@ -96,6 +96,10 @@ extension Settings {
                         Group {
                             Text("CGM Events")
                                 .navigationLink(to: .configEditor(file: OpenAPS.Monitor.cgmState), from: self)
+                            Text("Uploaded CGM Events")
+                                .navigationLink(to: .configEditor(file: OpenAPS.Nightscout.uploadedCGMState), from: self)
+                            Text("Uploaded Battery Events")
+                                .navigationLink(to: .configEditor(file: OpenAPS.Nightscout.uploadedBatteryAge), from: self)
                         }
                         Group {
                             Text("Target presets")

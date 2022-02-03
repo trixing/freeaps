@@ -80,6 +80,7 @@ extension OpenAPS {
         static let uploadedGlucose = "upload/uploaded-glucose.json"
         static let uploadedCGMState = "upload/uploaded-cgm-state.json"
         static let uploadedProfile = "upload/uploaded-profile.json"
+        static let uploadedBatteryAge = "upload/uploaded-battery-age.json"
     }
 
     enum FreeAPS {

@@ -377,22 +377,7 @@ final class BasePumpHistoryStorage: PumpHistoryStorage, Injectable {
                 // magic is necessary to detect a battery change
                 NSLog(".pumpBattery \(event)")
                 return nil
-//                return NigtscoutTreatment(
-//                    duration: nil,
-//                    rawDuration: nil,
-//                    rawRate: nil,
-//                    absolute: nil,
-//                    rate: nil,
-//                    eventType: .nsBatteryChange,
-//                    createdAt: event.timestamp,
-//                    enteredBy: NigtscoutTreatment.local,
-//                    bolus: nil,
-//                    insulin: nil,
-//                    notes: "\(String(describing: event.title))",
-//                    carbs: nil,
-//                    targetTop: nil,
-//                    targetBottom: nil
-//                )
+
             default: return nil
             }
         }
