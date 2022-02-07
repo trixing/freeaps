@@ -239,8 +239,13 @@ final class BaseNightscoutManager: NightscoutManager, Injectable {
                 .store(in: &self.lifetime)
         }
 
-        let batteryAge = storage.retrieve(OpenAPS.Nightscout.uploadedBatteryAge, as: [NigtscoutTreatment].self) ?? []
-        let batteryDate = batteryAge.last?.createdAt ?? Date.distantPast
+        uploadBatteryAge(battery: battery)
+        uploadPodAge()
+    }
+
+    func uploadBatteryAge(battery: Battery?) {
+        let uploadedBatteryAge = storage.retrieve(OpenAPS.Nightscout.uploadedBatteryAge, as: [NigtscoutTreatment].self) ?? []
+        let batteryDate = uploadedBatteryAge.last?.createdAt ?? Date.distantPast
 
         if let battery = battery, let percent = battery.percent, percent > 95,
            abs(batteryDate.timeIntervalSinceNow) > TimeInterval(hours: 48)
@@ -263,7 +268,9 @@ final class BaseNightscoutManager: NightscoutManager, Injectable {
             )
             uploadTreatments([batteryTreatment], fileToSave: OpenAPS.Nightscout.uploadedBatteryAge)
         }
+    }
 
+    func uploadPodAge() {
         let uploadedPodAge = storage.retrieve(OpenAPS.Nightscout.uploadedPodAge, as: [NigtscoutTreatment].self) ?? []
         if let podAge = storage.retrieve(OpenAPS.Monitor.podAge, as: Date.self),
            uploadedPodAge.last?.createdAt == nil || podAge != uploadedPodAge.last!.createdAt!
