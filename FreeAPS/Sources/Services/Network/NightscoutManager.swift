@@ -336,6 +336,13 @@ final class BaseNightscoutManager: NightscoutManager, Injectable {
                 timeAsSeconds: item.minutes * 60
             )
         }
+        var nsUnits = ""
+        switch settingsManager.settings.units {
+        case .mgdL:
+            nsUnits = "mg/dl"
+        case .mmolL:
+            nsUnits = "mmol"
+        }
 
         let ps = ScheduledNightscoutProfile(
             dia: settingsManager.pumpSettings.insulinActionCurve,
@@ -347,7 +354,7 @@ final class BaseNightscoutManager: NightscoutManager, Injectable {
             sens: sens,
             basal: basal,
             carbratio: cr,
-            units: settingsManager.settings.units.rawValue.lowercased()
+            units: nsUnits
         )
         let defaultProfile = "default"
         let now = Date()
@@ -355,7 +362,7 @@ final class BaseNightscoutManager: NightscoutManager, Injectable {
             defaultProfile: defaultProfile,
             startDate: now,
             mills: Int(now.timeIntervalSince1970),
-            units: settingsManager.settings.units.rawValue.lowercased(),
+            units: nsUnits,
             enteredBy: NigtscoutTreatment.local,
             store: [defaultProfile: ps]
         )
