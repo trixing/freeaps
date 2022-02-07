@@ -46,6 +46,7 @@ struct ScheduledNightscoutProfile: JSON {
     let sens: [NightscoutTimevalue]
     let basal: [NightscoutTimevalue]
     let carbratio: [NightscoutTimevalue]
+    let units: String
 }
 
 struct NightscoutProfileStore: JSON {
