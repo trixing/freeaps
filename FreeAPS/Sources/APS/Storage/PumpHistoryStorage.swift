@@ -368,7 +368,8 @@ final class BasePumpHistoryStorage: PumpHistoryStorage, Injectable {
                     targetTop: nil,
                     targetBottom: nil,
                     glucoseType: "Meter",
-                    units: String(describing: settingsManager.settings.units),
+                    // TODO should use mg/dl and mmol, like profile
+                    units: settingsManager.settings.units.rawValue,
                     glucose: event.glucose
                 )
             case .pumpBattery:
