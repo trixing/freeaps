@@ -33,6 +33,23 @@ extension PreferencesEditor {
                     settable: self
                 ),
                 Field(
+                    displayName: "Use Custom Peak Time",
+                    type: .boolean(keypath: \.useCustomPeakTime),
+                    infoText: NSLocalizedString(
+                        "Defaults to false. Setting to true allows changing insulinPeakTime", comment: "Use Custom Peak Time"
+                    ),
+                    settable: self
+                ),
+                Field(
+                    displayName: "Insulin Peak Time",
+                    type: .decimal(keypath: \.insulinPeakTime),
+                    infoText: NSLocalizedString(
+                        "Time of maximum blood glucose lowering effect of insulin, in minutes. Beware: Oref assumes for ultra-rapid (Lyumjev) & rapid-acting (Fiasp) curves minimal (35 & 50 min) and maximal (100 & 120 min) applicable insulinPeakTimes. Using a custom insulinPeakTime outside these bounds will result in issues with FreeAPS-X, longer loop calculations and possible red loops.",
+                        comment: "Insulin Peak Time"
+                    ),
+                    settable: self
+                ),
+                Field(
                     displayName: "Max IOB",
                     type: .decimal(keypath: \.maxIOB),
                     infoText: NSLocalizedString(
@@ -267,23 +284,6 @@ extension PreferencesEditor {
                     ),
                     settable: self
                 ),
-                Field(
-                    displayName: "Use Custom Peak Time",
-                    type: .boolean(keypath: \.useCustomPeakTime),
-                    infoText: NSLocalizedString(
-                        "Defaults to false. Setting to true allows changing insulinPeakTime", comment: "Use Custom Peak Time"
-                    ),
-                    settable: self
-                ),
-                Field(
-                    displayName: "Insulin Peak Time",
-                    type: .decimal(keypath: \.insulinPeakTime),
-                    infoText: NSLocalizedString(
-                        "Time of maximum blood glucose lowering effect of insulin, in minutes. Beware: Oref assumes for ultra-rapid (Lyumjev) & rapid-acting (Fiasp) curves minimal (35 & 50 min) and maximal (100 & 120 min) applicable insulinPeakTimes. Using a custom insulinPeakTime outside these bounds will result in issues with FreeAPS-X, longer loop calculations and possible red loops.",
-                        comment: "Insulin Peak Time"
-                    ),
-                    settable: self
-                ),
 //                Field(
 //                    displayName: "Carbs Req Threshold",
 //                    type: .decimal(keypath: \.carbsReqThreshold),
@@ -428,6 +428,96 @@ extension PreferencesEditor {
                     infoText: NSLocalizedString(
                         "Default value: 0.5 This is another key OpenAPS safety cap, and specifies what share of the total insulin required can be delivered as SMB. This is to prevent people from getting into dangerous territory by setting SMB requests from the caregivers phone at the same time. Increase this experimental value slowly and with caution.",
                         comment: "SMB DeliveryRatio"
+                    ),
+                    settable: self
+                ),
+                Field(
+                    displayName: "SMB DeliveryRatio BG Range",
+                    type: .decimal(keypath: \.smbDeliveryRatioBGrange),
+                    infoText: NSLocalizedString(
+                        "Default value: 0, Sensible is bteween 40 and 120. The linearly increasing SMB delivery ratio is mapped to the glucose range [target_bg, target_bg+bg_range]. At target_bg the SMB ratio is smb_delivery_ratio_min, at target_bg+bg_range it is smb_delivery_ratio_max. With 0 the linearly increasing SMB ratio is disabled and the fix smb_delivery_ratio is used.",
+                        comment: "SMB DeliveryRatio BG Range"
+                    ),
+                    settable: self
+                ),
+                Field(
+                    displayName: "SMB DeliveryRatio BG Minimum",
+                    type: .decimal(keypath: \.smbDeliveryRatioMin),
+                    infoText: NSLocalizedString(
+                        "Default value: 0.5 This is the lower end of a linearly increasing SMB Delivery Ratio rather than the fix value above in SMB DeliveryRatio.",
+                        comment: "SMB DeliveryRatio Minimum"
+                    ),
+                    settable: self
+                ),
+                Field(
+                    displayName: "SMB DeliveryRatio BG Maximum",
+                    type: .decimal(keypath: \.smbDeliveryRatioMax),
+                    infoText: NSLocalizedString(
+                        "Default value: 0.5 This is the higher end of a linearly increasing SMB Delivery Ratio rather than the fix value above in SMB DeliveryRatio.",
+                        comment: "SMB DeliveryRatio Minimum"
+                    ),
+                    settable: self
+                ),
+                Field(
+                    displayName: "Enable AutoISF with COB",
+                    type: .boolean(keypath: \.enableautoISFwithCOB),
+                    infoText: NSLocalizedString(
+                        "Enables autoISF not just for UAM, but also with COB\n\nRead up on:\nhttps://github.com/ga-zelle/autoISF/tree/2.8.2_dev_parabola",
+                        comment: "Enable autoISF with COB"
+                    ),
+                    settable: self
+                ),
+                Field(
+                    displayName: "ISF weight for higher BG's",
+                    type: .decimal(keypath: \.higherISFrangeWeight),
+                    infoText: NSLocalizedString(
+                        "Default value: 0.0 This is the weight applied to the polygon which adapts ISF if glucose is above target. With 0.0 the effect is effectively disabled.",
+                        comment: "ISF high BG weight"
+                    ),
+                    settable: self
+                ),
+                Field(
+                    displayName: "ISF weight for lower BG's",
+                    type: .decimal(keypath: \.lowerISFrangeWeight),
+                    infoText: NSLocalizedString(
+                        "Default value: 0.0 This is the weight applied to the polygon which adapts ISF if glucose is below target. With 0.0 the effect is effectively disabled.",
+                        comment: "ISF low BG weight"
+                    ),
+                    settable: self
+                ),
+                Field(
+                    displayName: "ISF weight for higher BG deltas",
+                    type: .decimal(keypath: \.deltaISFrangeWeight),
+                    infoText: NSLocalizedString(
+                        "Default value: 0.0 This is the weight applied to the polygon which adapts ISF higher deltas. With 0.0 the effect is effectively disabled.",
+                        comment: "ISF higher delta BG weight"
+                    ),
+                    settable: self
+                ),
+                Field(
+                    displayName: "Enable always postprandial ISF adaption",
+                    type: .boolean(keypath: \.postMealISFalways),
+                    infoText: NSLocalizedString(
+                        "Enable the postprandial ISF adaptation all the time regardless of when the last meal was taken.",
+                        comment: "Enable postprandial ISF always"
+                    ),
+                    settable: self
+                ),
+                Field(
+                    displayName: "ISF weight for postprandial BG rise",
+                    type: .decimal(keypath: \.postMealISFweight),
+                    infoText: NSLocalizedString(
+                        "Default value: 0 This is the weight applied to the linear slope while glucose rises and  which adapts ISF. With 0 this contribution is effectively disabled.",
+                        comment: "ISF postprandial weight"
+                    ),
+                    settable: self
+                ),
+                Field(
+                    displayName: "Duration ISF postprandial adaption",
+                    type: .decimal(keypath: \.postMealISFduration),
+                    infoText: NSLocalizedString(
+                        "Default value: 3 This is the duration in hours how long after a meal the effect will be active. Oref will delete carb timing after 10 hours latest no matter what you enter.",
+                        comment: "ISF postprandial change duration"
                     ),
                     settable: self
                 )
