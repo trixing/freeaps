@@ -66,7 +66,7 @@ struct TagCloudView: View {
                 case "Standard":
                     return .loopYellow
                 default:
-                    return .tempBasal
+                    return .basal
                 }
             }
         }
