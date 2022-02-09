@@ -64,6 +64,7 @@ final class BaseWatchManager: NSObject, WatchManager, Injectable {
 
             self.state.iob = self.suggestion?.iob
             self.state.cob = self.suggestion?.cob
+            self.state.isf = self.suggestion?.isf
             self.state.tempTargets = self.tempTargetsStorage.presets()
                 .map { target -> TempTargetWatchPreset in
                     let untilDate = self.tempTargetsStorage.current().flatMap { currentTarget -> Date? in
@@ -79,7 +80,7 @@ final class BaseWatchManager: NSObject, WatchManager, Injectable {
                     )
                 }
             self.state.bolusAfterCarbs = !self.settingsManager.settings.skipBolusScreenAfterCarbs
-            self.state.eventualBG = self.evetualBGStraing()
+            self.state.eventualBG = self.eventualBGString()
 
             self.sendState()
         }
@@ -140,12 +141,12 @@ final class BaseWatchManager: NSObject, WatchManager, Injectable {
         return description
     }
 
-    private func evetualBGStraing() -> String? {
+    private func eventualBGString() -> String? {
         guard let eventualBG = suggestion?.eventualBG else {
             return nil
         }
         let units = settingsManager.settings.units
-        return "⇢ " + eventualFormatter.string(
+        return eventualFormatter.string(
             from: (units == .mmolL ? eventualBG.asMmolL : Decimal(eventualBG)) as NSNumber
         )!
     }

@@ -211,7 +211,6 @@
 		38E8757B2757B1C300975559 /* TempTargetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E8757A2757B1C300975559 /* TempTargetsView.swift */; };
 		38E8757D2757C45D00975559 /* BolusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E8757C2757C45D00975559 /* BolusView.swift */; };
 		38E8757E2758C86A00975559 /* ConvenienceExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38192E0C261BAF980094D973 /* ConvenienceExtensions.swift */; };
-		38E8758027595DC600975559 /* BolusConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E8757F27595DC500975559 /* BolusConfirmationView.swift */; };
 		38E989DD25F5021400C0CED0 /* PumpStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E989DC25F5021400C0CED0 /* PumpStatus.swift */; };
 		38E98A2325F52C9300C0CED0 /* Signpost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E98A1B25F52C9300C0CED0 /* Signpost.swift */; };
 		38E98A2425F52C9300C0CED0 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E98A1C25F52C9300C0CED0 /* Logger.swift */; };
@@ -239,6 +238,7 @@
 		448B6FCB252BD4796E2960C0 /* PumpSettingsEditorDataFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0274EE6439B1C3ED70730D41 /* PumpSettingsEditorDataFlow.swift */; };
 		45252C95D220E796FDB3B022 /* ConfigEditorDataFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8A87AA037BD079BA3528BA /* ConfigEditorDataFlow.swift */; };
 		45717281F743594AA9D87191 /* ConfigEditorRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920DDB21E5D0EB813197500D /* ConfigEditorRootView.swift */; };
+		4971013927B3F94A00A13894 /* BolusConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E8757F27595DC500975559 /* BolusConfirmationView.swift */; };
 		5075C1608E6249A51495C422 /* TargetsEditorProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDEA2DC60EDE0A3CA54DC73 /* TargetsEditorProvider.swift */; };
 		53F2382465BF74DB1A967C8B /* PumpConfigProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8630D58BDAD6D9C650B9B39 /* PumpConfigProvider.swift */; };
 		5BFA1C2208114643B77F8CEB /* AddTempTargetProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE53A13D26F101B332EFFC8 /* AddTempTargetProvider.swift */; };
@@ -2327,7 +2327,7 @@
 				38E8757E2758C86A00975559 /* ConvenienceExtensions.swift in Sources */,
 				38E8754727554DF100975559 /* Color+Extensions.swift in Sources */,
 				38E8755927567CA600975559 /* Decimal+Extensions.swift in Sources */,
-				38E8758027595DC600975559 /* BolusConfirmationView.swift in Sources */,
+				4971013927B3F94A00A13894 /* BolusConfirmationView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
