@@ -52,23 +52,28 @@ struct TagCloudView: View {
 
     private func item(for textTag: String) -> some View {
         var colorOfTag: Color {
-            switch textTag {
-            case "autoISF":
-                return .loopYellow
-            case "Parabolic Fit":
-                return .loopRed
-            case "Autosense":
-                return .loopGreen
-            case "Standard":
-                return .zt
-            default:
-                return .basal
+            if textTag.contains("Floating") {
+                return .loopOrange } else {
+                switch textTag {
+                case "autoISF":
+                    return .zt
+                case "SMB Delivery Ratio:":
+                    return .uam
+                case "Parabolic Fit":
+                    return .loopRed
+                case "Autosens":
+                    return .loopGreen
+                case "Standard":
+                    return .loopYellow
+                default:
+                    return .tempBasal
+                }
             }
         }
         return ZStack { Text(textTag)
             .padding(.vertical, 2)
             .padding(.horizontal, 4)
-            .font(.body)
+            .font(.caption)
             .background(colorOfTag.opacity(0.8))
             .foregroundColor(Color.white)
             .cornerRadius(5) }

@@ -376,7 +376,7 @@ extension PreferencesEditor {
                 )
             ]
 
-            let xpmSettings = [
+            let xpmToogles = [
                 Field(
                     displayName: "Enable Floating Carbs",
                     type: .boolean(keypath: \.floatingcarbs),
@@ -396,6 +396,26 @@ extension PreferencesEditor {
                     settable: self
                 ),
                 Field(
+                    displayName: "Enable AutoISF with COB",
+                    type: .boolean(keypath: \.enableautoISFwithCOB),
+                    infoText: NSLocalizedString(
+                        "Enables autoISF not just for UAM, but also with COB\n\nRead up on:\nhttps://github.com/ga-zelle/autoISF/tree/2.8.2_dev_parabola",
+                        comment: "Enable autoISF with COB"
+                    ),
+                    settable: self
+                ),
+                Field(
+                    displayName: "Enable BG acceleration in AutoISF2.2",
+                    type: .boolean(keypath: \.enableBGacceleration),
+                    infoText: NSLocalizedString(
+                        "Enables the BG acceleration adaptiions for autoISF\n\nRead up on:\nhttps://github.com/ga-zelle/autoISF/tree/2.8.2dev_ai2.2",
+                        comment: "Enable BG accel in autoISF"
+                    ),
+                    settable: self
+                )
+            ]
+            let xpmSettings = [
+                Field(
                     displayName: "AutoISF HourlyMaxChange",
                     type: .decimal(keypath: \.autoISFhourlyChange),
                     infoText: NSLocalizedString(
@@ -412,7 +432,9 @@ extension PreferencesEditor {
                         comment: "AutoISF Max"
                     ),
                     settable: self
-                ),
+                )
+            ]
+            let xpmSMB = [
                 Field(
                     displayName: "SMB Max RangeExtension",
                     type: .decimal(keypath: \.smbMaxRangeExtension),
@@ -457,16 +479,38 @@ extension PreferencesEditor {
                         comment: "SMB DeliveryRatio Minimum"
                     ),
                     settable: self
-                ),
+                )
+            ]
+            let xpmParabolicFit = [
                 Field(
-                    displayName: "Enable AutoISF with COB",
-                    type: .boolean(keypath: \.enableautoISFwithCOB),
+                    displayName: "ISF weight while BG accelerates",
+                    type: .decimal(keypath: \.bgAccelISFweight),
                     infoText: NSLocalizedString(
-                        "Enables autoISF not just for UAM, but also with COB\n\nRead up on:\nhttps://github.com/ga-zelle/autoISF/tree/2.8.2_dev_parabola",
-                        comment: "Enable autoISF with COB"
+                        "Default value: 0. This is the weight applied while glucose accelerates and which strengthens ISF. With 0 this contribution is effectively disabled. 0.15 might be a good starting point.",
+                        comment: "ISF acceleration weight"
                     ),
                     settable: self
                 ),
+                Field(
+                    displayName: "ISF weight while BG decelerates",
+                    type: .decimal(keypath: \.bgBrakeISFweight),
+                    infoText: NSLocalizedString(
+                        "Default value: 0. This is the weight applied while glucose decelerates and which weakens ISF. With 0 this contribution is effectively disabled. 0.15 might be a good starting point.",
+                        comment: "ISF decceleration weight"
+                    ),
+                    settable: self
+                ),
+                Field(
+                    displayName: "AutoISF Min",
+                    type: .decimal(keypath: \.autoISFmin),
+                    infoText: NSLocalizedString(
+                        "This is a multiplier cap for autoISF to set a limit on how low the autoISF ratio can be, which in turn determines how high it can adjust ISF.",
+                        comment: "AutoISF Min"
+                    ),
+                    settable: self
+                )
+            ]
+            let xpmAutoISF = [
                 Field(
                     displayName: "ISF weight for higher BG's",
                     type: .decimal(keypath: \.higherISFrangeWeight),
@@ -493,7 +537,9 @@ extension PreferencesEditor {
                         comment: "ISF higher delta BG weight"
                     ),
                     settable: self
-                ),
+                )
+            ]
+            let xpmPostPrandial = [
                 Field(
                     displayName: "Enable always postprandial ISF adaption",
                     type: .boolean(keypath: \.postMealISFalways),
@@ -539,8 +585,34 @@ extension PreferencesEditor {
                     fields: otherSettings
                 ),
                 FieldSection(
-                    displayName: NSLocalizedString("XPM settings", comment: "Experimental stuff settings"),
+                    displayName: NSLocalizedString("XPM toggles", comment: "Switch on/off experimental stuff"),
+                    fields: xpmToogles
+                ),
+                FieldSection(
+                    displayName: NSLocalizedString("autoISF general settings", comment: "Experimental stuff settings"),
                     fields: xpmSettings
+                ),
+                FieldSection(
+                    displayName: NSLocalizedString("SMB Delivery Ratio settings", comment: "Experimental settings for SMBs"),
+                    fields: xpmSMB
+                ),
+                FieldSection(
+                    displayName: NSLocalizedString("autoISF 2.1 settings", comment: "Experimental settings for autoISF 2.1"),
+                    fields: xpmAutoISF
+                ),
+                FieldSection(
+                    displayName: NSLocalizedString(
+                        "autoISF 2.2 Parabolic Fit settings",
+                        comment: "Experimental settings for autoISF 2.2"
+                    ),
+                    fields: xpmParabolicFit
+                ),
+                FieldSection(
+                    displayName: NSLocalizedString(
+                        "autoISF 2.1 Post-prandial settings",
+                        comment: "Experimental settings for autoISF 2.1"
+                    ),
+                    fields: xpmPostPrandial
                 )
             ]
         }
