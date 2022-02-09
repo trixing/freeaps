@@ -7,6 +7,7 @@ extension AddCarbs {
         @Published var carbs: Decimal = 0
         @Published var date = Date()
         @Published var carbsRequired: Decimal?
+        @Published var offset: TimeInterval = 0
 
         override func subscribe() {
             carbsRequired = provider.suggestion?.carbsReq
@@ -19,7 +20,7 @@ extension AddCarbs {
             }
 
             carbsStorage.storeCarbs([
-                CarbsEntry(createdAt: date, carbs: carbs, enteredBy: CarbsEntry.manual)
+                CarbsEntry(createdAt: date.addingTimeInterval(offset), carbs: carbs, enteredBy: CarbsEntry.manual)
             ])
 
             if settingsManager.settings.skipBolusScreenAfterCarbs {
