@@ -1,0 +1,67 @@
+[
+  {
+    "start": "00:00:00",
+    "minutes": 0,
+    "rate": 0.55
+  },
+  {
+    "start": "02:00:00",
+    "minutes": 120,
+    "rate": 0.6
+  },
+  {
+    "start": "03:00:00",
+    "minutes": 180,
+    "rate": 0.65
+  },
+  {
+    "start": "05:00:00",
+    "minutes": 300,
+    "rate": 0.7
+  },
+  {
+    "start": "09:00:00",
+    "minutes": 540,
+    "rate": 0.6
+  },
+  {
+    "start": "10:00:00",
+    "minutes": 600,
+    "rate": 0.65
+  },
+  {
+    "start": "11:00:00",
+    "minutes": 660,
+    "rate": 0.6
+  },
+  {
+    "start": "12:00:00",
+    "minutes": 720,
+    "rate": 0.55
+  },
+  {
+    "start": "13:00:00",
+    "minutes": 780,
+    "rate": 0.65
+  },
+  {
+    "start": "15:00:00",
+    "minutes": 900,
+    "rate": 0.6
+  },
+  {
+    "start": "16:00:00",
+    "minutes": 960,
+    "rate": 0.55
+  },
+  {
+    "start": "19:00:00",
+    "minutes": 1140,
+    "rate": 0.6
+  },
+  {
+    "start": "21:00:00",
+    "minutes": 1260,
+    "rate": 0.7
+  }
+]

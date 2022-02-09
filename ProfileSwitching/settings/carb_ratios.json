@@ -1,0 +1,70 @@
+{
+  "units" : "grams",
+  "schedule" : [
+    {
+      "start" : "00:00:00",
+      "ratio" : 12,
+      "offset" : 0
+    },
+    {
+      "start" : "02:00:00",
+      "ratio" : 10.8,
+      "offset" : 120
+    },
+    {
+      "start" : "03:00:00",
+      "ratio" : 9.8,
+      "offset" : 180
+    },
+    {
+      "start" : "05:00:00",
+      "ratio" : 8,
+      "offset" : 300
+    },
+    {
+      "start" : "09:00:00",
+      "ratio" : 10.8,
+      "offset" : 540
+    },
+    {
+      "start" : "10:00:00",
+      "ratio" : 9.8,
+      "offset" : 600
+    },
+    {
+      "start" : "11:00:00",
+      "ratio" : 10.8,
+      "offset" : 660
+    },
+    {
+      "start" : "12:00:00",
+      "ratio" : 12,
+      "offset" : 720
+    },
+    {
+      "start" : "13:00:00",
+      "ratio" : 9.8,
+      "offset" : 780
+    },
+    {
+      "start" : "15:00:00",
+      "ratio" : 10.8,
+      "offset" : 900
+    },
+    {
+      "start" : "16:00:00",
+      "ratio" : 12,
+      "offset" : 960
+    },
+    {
+      "start" : "19:00:00",
+      "ratio" : 10.8,
+      "offset" : 1140
+    },
+    {
+      "start" : "21:00:00",
+      "ratio" : 8.8,
+      "offset" : 1260
+    }
+  ]
+}

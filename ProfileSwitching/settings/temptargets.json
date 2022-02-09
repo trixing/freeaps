@@ -1,0 +1,21 @@
+[
+  {
+    "_id" : "187269C4-6F41-4253-9878-33B8A8900828",
+    "name" : "Cancel",
+    "reason" : "Cancel",
+    "created_at" : "2022-01-19T06:39:26.210Z",
+    "targetTop" : 0,
+    "duration" : 0,
+    "enteredBy" : "freeaps-x",
+    "targetBottom" : 0
+  },
+  {
+    "_id" : "61e7a8f79027de9088bb8fa0",
+    "reason" : "🌤 Morning Insulin",
+    "created_at" : "2022-01-19T06:00:23.107Z",
+    "targetTop" : 80,
+    "duration" : 90,
+    "enteredBy" : "Shortcut",
+    "targetBottom" : 80
+  }
+]

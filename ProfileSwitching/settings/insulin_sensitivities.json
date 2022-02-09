@@ -1,0 +1,81 @@
+{
+  "units" : "mg/dL",
+  "sensitivities" : [
+    {
+      "sensitivity" : 43,
+      "start" : "00:00:00",
+      "offset" : 0
+    },
+    {
+      "sensitivity" : 54,
+      "start" : "00:30:00",
+      "offset" : 30
+    },
+    {
+      "sensitivity" : 50,
+      "start" : "02:00:00",
+      "offset" : 120
+    },
+    {
+      "sensitivity" : 47,
+      "start" : "03:00:00",
+      "offset" : 180
+    },
+    {
+      "sensitivity" : 43,
+      "start" : "04:00:00",
+      "offset" : 240
+    },
+    {
+      "sensitivity" : 40,
+      "start" : "05:00:00",
+      "offset" : 300
+    },
+    {
+      "sensitivity" : 50,
+      "start" : "09:00:00",
+      "offset" : 540
+    },
+    {
+      "sensitivity" : 47,
+      "start" : "10:00:00",
+      "offset" : 600
+    },
+    {
+      "sensitivity" : 50,
+      "start" : "11:00:00",
+      "offset" : 660
+    },
+    {
+      "sensitivity" : 54,
+      "start" : "12:00:00",
+      "offset" : 720
+    },
+    {
+      "sensitivity" : 47,
+      "start" : "13:00:00",
+      "offset" : 780
+    },
+    {
+      "sensitivity" : 50,
+      "start" : "15:00:00",
+      "offset" : 900
+    },
+    {
+      "sensitivity" : 54,
+      "start" : "16:00:00",
+      "offset" : 960
+    },
+    {
+      "sensitivity" : 50,
+      "start" : "19:00:00",
+      "offset" : 1140
+    },
+    {
+      "sensitivity" : 43,
+      "start" : "22:00:00",
+      "offset" : 1320
+    }
+  ],
+  "user_preferred_units" : "mg/dL"
+}
