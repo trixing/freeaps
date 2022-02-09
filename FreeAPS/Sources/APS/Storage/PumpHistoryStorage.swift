@@ -368,7 +368,7 @@ final class BasePumpHistoryStorage: PumpHistoryStorage, Injectable {
                     targetTop: nil,
                     targetBottom: nil,
                     glucoseType: "Meter",
-                    // TODO should use mg/dl and mmol, like profile
+                    // TODO: should use mg/dl and mmol, like profile
                     units: settingsManager.settings.units.rawValue,
                     glucose: event.glucose
                 )
