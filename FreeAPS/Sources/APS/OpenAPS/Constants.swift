@@ -52,11 +52,7 @@ extension OpenAPS {
         static let meal = "monitor/meal.json"
         static let glucose = "monitor/glucose.json"
         static let iob = "monitor/iob.json"
-<<<<<<< HEAD
-=======
-        static let cgmState = "monitor/cgm-state.json"
         static let podAge = "monitor/pod-age.json"
->>>>>>> c9fb2ea (Experimental OmniPod age upload to CAGE as Site Change event)
     }
 
     enum Enact {
