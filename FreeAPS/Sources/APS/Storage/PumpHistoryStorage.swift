@@ -147,15 +147,6 @@ final class BasePumpHistoryStorage: PumpHistoryStorage, Injectable {
                             note: event.title
                         )
                     ]
-                case .battery:
-                    return [
-                        PumpHistoryEvent(
-                            id: id,
-                            type: .pumpBattery,
-                            timestamp: event.date,
-                            note: event.title
-                        )
-                    ]
                 case .bgCheck:
                     if let bg = BGReceivedPumpEvent(
                         availableData: event.raw,
@@ -372,13 +363,6 @@ final class BasePumpHistoryStorage: PumpHistoryStorage, Injectable {
                     units: settingsManager.settings.units.rawValue,
                     glucose: event.glucose
                 )
-            case .pumpBattery:
-                // In testing with Medtronic this creates an
-                // event every 10 minutes. I guess some more
-                // magic is necessary to detect a battery change
-                NSLog(".pumpBattery \(event)")
-                return nil
-
             default: return nil
             }
         }
