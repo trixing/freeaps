@@ -10,12 +10,11 @@ That will be more easy to review as the packeted js-files in FAX are not really 
 
 There needed to be some changes to the UI. I tried to keep them minimal.
 - show ISF as the key parameter in this oref adaption in the header near current BG
+- move the Enacted popup a bit further down to review Header info simultaneously
 - make space for this and the eventual BG up there as well, so COB and IOB are small icons
 - colors harmonized
 
 ![view FAX](screen-FAXaisf.png)
-
-![view Enacted pop-up](enacted.png)
 
 ![view watch](screen-AppleWatch.png)
 
@@ -29,7 +28,7 @@ You will loose most of your previous settings in FAX, all settings with pre-defi
 
 Autosens and autoISF both manipulate sensitivityRatios and ISF. It is currently setup that the stronger sensitivityRatios win. In order to not get duplicating effects or contradicting effects, it is suggested to switch Autosens off by setting `profile.autosens_max = 1` and `profile.autosens_min = 1`, which is an absolute must if no carbs are logged, running in UAM only mode.
 
-If you enter carbs and still want to have Autosens running alongside, at least *Sensitivity Raises Target* and *Resistance Lowers Targets* should to be switched off. 
+If you enter carbs and still want to have Autosens running alongside, at least *Sensitivity Raises Target* and *Resistance Lowers Targets* should to be switched off.
 
 ## Sports & autoISF
 
