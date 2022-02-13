@@ -73,7 +73,7 @@ extension Bolus {
                             if state.amount > 0 {
                                 Button { state.add() }
                                 label: { Text("Enact bolus") }
-                                    .disabled(state.amount > state.inslinRequired)
+                                    .disabled(state.amount > state.insulinRequired)
                             } else {
                                 Button { state.hideModal() } // happens to handle amount = 0 fine
                                 label: { Text("Skip bolus") }

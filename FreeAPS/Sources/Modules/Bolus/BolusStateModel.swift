@@ -72,7 +72,7 @@ extension Bolus {
                 self.insulinRequired = self.provider.suggestion?.insulinReq ?? 0
                 self.insulinRecommended = self.apsManager
                     .roundBolus(amount: max(self.insulinRequired * self.settingsManager.settings.insulinReqFraction, 0))
-                self.amount = self.inslinRecommended
+                self.amount = self.insulinRecommended
             }
         }
     }
