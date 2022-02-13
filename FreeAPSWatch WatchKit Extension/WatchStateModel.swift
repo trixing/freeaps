@@ -6,10 +6,10 @@ import WatchConnectivity
 class WatchStateModel: NSObject, ObservableObject {
     var session: WCSession
 
-    @Published var glucose = "00"
+    @Published var glucose = "--"
     @Published var trend = "→"
-    @Published var delta = "+00"
-    @Published var eventualBG = ""
+    @Published var delta = "+0"
+    @Published var eventualBG = "--"
     @Published var lastLoopDate: Date?
     @Published var glucoseDate: Date?
     @Published var bolusIncrement: Decimal?
@@ -19,13 +19,27 @@ class WatchStateModel: NSObject, ObservableObject {
     @Published var carbsRequired: Decimal?
     @Published var iob: Decimal?
     @Published var cob: Decimal?
+    @Published var isf: Decimal?
     @Published var tempTargets: [TempTargetWatchPreset] = []
     @Published var bolusAfterCarbs = true
 
     @Published var isCarbsViewActive = false
     @Published var isTempTargetViewActive = false
     @Published var isBolusViewActive = false
-    @Published var isConfirmationViewActive = false
+    @Published var isConfirmationViewActive = false {
+        didSet {
+            confirmationTimeout = nil
+            if isConfirmationViewActive {
+                confirmationTimeout = Just(())
+                    .delay(for: 30, scheduler: DispatchQueue.main)
+                    .sink {
+                        WKInterfaceDevice.current().play(.retry)
+                        self.isConfirmationViewActive = false
+                    }
+            }
+        }
+    }
+
     @Published var isConfirmationBolusViewActive = false
     @Published var confirmationSuccess: Bool?
     @Published var lastUpdate: Date = .distantPast
@@ -33,6 +47,7 @@ class WatchStateModel: NSObject, ObservableObject {
     @Published var pendingBolus: Double?
 
     private var lifetime = Set<AnyCancellable>()
+    private var confirmationTimeout: AnyCancellable?
     let timer = Timer.publish(every: 10, on: .main, in: .common).autoconnect()
 
     init(session: WCSession = .default) {
@@ -142,10 +157,11 @@ class WatchStateModel: NSObject, ObservableObject {
         carbsRequired = state.carbsRequired
         iob = state.iob
         cob = state.cob
+        isf = state.isf
         tempTargets = state.tempTargets
         bolusAfterCarbs = state.bolusAfterCarbs ?? true
-        eventualBG = state.eventualBG ?? ""
         lastUpdate = Date()
+        eventualBG = state.eventualBG ?? ""
     }
 }
 
@@ -164,7 +180,6 @@ extension WatchStateModel: WCSessionDelegate {
     func session(_: WCSession, didReceiveMessageData messageData: Data) {
         if let state = try? JSONDecoder().decode(WatchState.self, from: messageData) {
             DispatchQueue.main.async {
-//                WKInterfaceDevice.current().play(.click)
                 self.processState(state)
             }
         }

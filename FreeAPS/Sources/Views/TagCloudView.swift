@@ -24,7 +24,7 @@ struct TagCloudView: View {
         return ZStack(alignment: .topLeading) {
             ForEach(self.tags, id: \.self) { tag in
                 self.item(for: tag)
-                    .padding([.horizontal, .vertical], 4)
+                    .padding([.horizontal, .vertical], 2)
                     .alignmentGuide(.leading, computeValue: { d in
                         if abs(width - d.width) > g.size.width
                         {
@@ -50,13 +50,33 @@ struct TagCloudView: View {
         }.background(viewHeightReader($totalHeight))
     }
 
-    private func item(for text: String) -> some View {
-        Text(text)
-            .padding(.all, 5)
-            .font(.body)
-            .background(Color.insulin)
+    private func item(for textTag: String) -> some View {
+        var colorOfTag: Color {
+            if textTag.contains("Floating") {
+                return .loopOrange } else {
+                switch textTag {
+                case "autoISF":
+                    return .zt
+                case "SMB Delivery Ratio:":
+                    return .uam
+                case "Parabolic Fit":
+                    return .loopRed
+                case "Autosens":
+                    return .loopGreen
+                case "Standard":
+                    return .loopYellow
+                default:
+                    return .basal
+                }
+            }
+        }
+        return ZStack { Text(textTag)
+            .padding(.vertical, 2)
+            .padding(.horizontal, 4)
+            .font(.caption)
+            .background(colorOfTag.opacity(0.8))
             .foregroundColor(Color.white)
-            .cornerRadius(5)
+            .cornerRadius(5) }
     }
 
     private func viewHeightReader(_ binding: Binding<CGFloat>) -> some View {

@@ -58,18 +58,28 @@ extension Home {
         var cobIobView: some View {
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
-                    Text("IOB").font(.caption2).foregroundColor(.secondary)
+//                    Text("COB").font(.caption2).foregroundColor(.secondary)
+                    Image("premeal")
+                        .renderingMode(.template)
+                        .resizable()
+                        .frame(width: 12, height: 12)
+                        .foregroundColor(.loopYellow)
                     Text(
-                        (numberFormatter.string(from: (state.suggestion?.iob ?? 0) as NSNumber) ?? "0") +
-                            NSLocalizedString(" U", comment: "Insulin unit")
+                        (numberFormatter.string(from: (state.suggestion?.cob ?? 0) as NSNumber) ?? "0") +
+                            NSLocalizedString(" g", comment: "gram of carbs")
                     )
                     .font(.system(size: 12, weight: .bold))
                 }
                 HStack {
-                    Text("COB").font(.caption2).foregroundColor(.secondary)
+//                    Text("IOB").font(.caption2).foregroundColor(.secondary)
+                    Image("bolus1")
+                        .renderingMode(.template)
+                        .resizable()
+                        .frame(width: 12, height: 12)
+                        .foregroundColor(.insulin)
                     Text(
-                        (numberFormatter.string(from: (state.suggestion?.cob ?? 0) as NSNumber) ?? "0") +
-                            NSLocalizedString(" g", comment: "gram of carbs")
+                        (numberFormatter.string(from: (state.suggestion?.iob ?? 0) as NSNumber) ?? "0") +
+                            NSLocalizedString(" U", comment: "Insulin unit")
                     )
                     .font(.system(size: 12, weight: .bold))
                 }
@@ -81,6 +91,8 @@ extension Home {
                 recentGlucose: $state.recentGlucose,
                 delta: $state.glucoseDelta,
                 units: $state.units,
+                eventualBG: $state.eventualBG,
+                currentISF: $state.isf,
                 alarm: $state.alarm
             )
             .onTapGesture {
@@ -237,15 +249,14 @@ extension Home {
                     Text("UAM")
                         .font(.system(size: 12, weight: .bold)).foregroundColor(.uam)
                 }
-
-                if let eventualBG = state.eventualBG {
-                    Text(
-                        "⇢ " + numberFormatter.string(
-                            from: (state.units == .mmolL ? eventualBG.asMmolL : Decimal(eventualBG)) as NSNumber
-                        )!
-                    )
-                    .font(.system(size: 12, weight: .bold)).foregroundColor(.secondary)
-                }
+//                if let eventualBG = state.eventualBG {
+//                    Text(
+//                        "⇢ " + numberFormatter.string(
+//                            from: (state.units == .mmolL ? eventualBG.asMmolL : Decimal(eventualBG)) as NSNumber
+//                        )!
+//                    )
+//                    .font(.system(size: 12, weight: .bold)).foregroundColor(.secondary)
+//                }
             }
             .frame(maxWidth: .infinity, maxHeight: 30)
         }
@@ -290,7 +301,7 @@ extension Home {
                                 .renderingMode(.template)
                                 .resizable()
                                 .frame(width: 24, height: 24)
-                                .foregroundColor(.loopGreen)
+                                .foregroundColor(.loopYellow)
                                 .padding(8)
                             if let carbsReq = state.carbsRequired {
                                 Text(numberFormatter.string(from: carbsReq as NSNumber)!)
@@ -309,7 +320,7 @@ extension Home {
                             .resizable()
                             .frame(width: 24, height: 24)
                             .padding(8)
-                    }.foregroundColor(.loopYellow)
+                    }.foregroundColor(.loopGreen)
                     Spacer()
                     Button { state.showModal(for: .bolus(waitForSuggestion: false)) }
                     label: {
@@ -349,9 +360,12 @@ extension Home {
             GeometryReader { geo in
                 VStack(spacing: 0) {
                     header(geo)
+                    Divider().background(Color.gray)
                     infoPanal
                     mainChart
                     legendPanal
+                        .background(Color.secondary.opacity(0.05))
+                    Divider().background(Color.gray)
                     bottomPanel(geo)
                 }
                 .edgesIgnoringSafeArea(.vertical)
@@ -361,23 +375,26 @@ extension Home {
             .navigationBarHidden(true)
             .ignoresSafeArea(.keyboard)
             .popup(isPresented: isStatusPopupPresented, alignment: .top, direction: .top) {
-                popup
-                    .padding()
-                    .background(
-                        RoundedRectangle(cornerRadius: 8, style: .continuous)
-                            .fill(Color(UIColor.darkGray))
-                    )
-                    .onTapGesture {
-                        isStatusPopupPresented = false
-                    }
-                    .gesture(
-                        DragGesture(minimumDistance: 10, coordinateSpace: .local)
-                            .onEnded { value in
-                                if value.translation.height < 0 {
-                                    isStatusPopupPresented = false
+                VStack {
+                    Rectangle().opacity(0).frame(height: 90)
+                    popup
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                .fill(Color(UIColor.darkGray).opacity(0.8))
+                        )
+                        .onTapGesture {
+                            isStatusPopupPresented = false
+                        }
+                        .gesture(
+                            DragGesture(minimumDistance: 10, coordinateSpace: .local)
+                                .onEnded { value in
+                                    if value.translation.height < 0 {
+                                        isStatusPopupPresented = false
+                                    }
                                 }
-                            }
-                    )
+                        )
+                }
             }
         }
 
@@ -387,7 +404,7 @@ extension Home {
                     .padding(.bottom, 4)
                 if let suggestion = state.suggestion {
                     TagCloudView(tags: suggestion.reasonParts).animation(.none, value: false)
-                    Text(suggestion.reasonConclusion.capitalizingFirstLetter()).font(.body).foregroundColor(.white)
+                    Text(suggestion.reasonConclusion.capitalizingFirstLetter()).font(.caption).foregroundColor(.white)
                 } else {
                     Text("No sugestion found").font(.body).foregroundColor(.white)
                 }

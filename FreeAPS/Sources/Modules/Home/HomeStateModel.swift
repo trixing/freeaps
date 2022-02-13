@@ -41,6 +41,7 @@ extension Home {
         @Published var errorDate: Date? = nil
         @Published var bolusProgress: Decimal?
         @Published var eventualBG: Int?
+        @Published var isf: Decimal?
         @Published var carbsRequired: Decimal?
         @Published var allowManualTemp = false
         @Published var units: GlucoseUnits = .mmolL
@@ -150,14 +151,13 @@ extension Home {
                 .store(in: &lifetime)
 
             $setupPump
-                .removeDuplicates()
                 .sink { [weak self] show in
                     guard let self = self else { return }
                     if show, let pumpManager = self.provider.apsManager.pumpManager {
                         let view = PumpConfig.PumpSettingsView(pumpManager: pumpManager, completionDelegate: self).asAny()
-                        self.router.mainSecondaryModalView.value = view
+                        self.router.mainSecondaryModalView.send(view)
                     } else {
-                        self.router.mainSecondaryModalView.value = nil
+                        self.router.mainSecondaryModalView.send(nil)
                     }
                 }
                 .store(in: &lifetime)
@@ -287,6 +287,7 @@ extension Home {
             }
 
             eventualBG = suggestion.eventualBG
+            isf = suggestion.isf
         }
 
         private func setupReservoir() {

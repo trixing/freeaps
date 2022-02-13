@@ -308,6 +308,9 @@ Enact a temp Basal or a temp target */
 /* */
 "Pump Settings" = "Pump Settings";
 
+/* Insulin sensitivity factor */
+"ISF" = "ISF";
+
 /* Insulin unit per hour */
 "U/hr" = "U/hr";
 
@@ -913,7 +916,7 @@ Enact a temp Basal or a temp target */
 "Bluetooth State restored (APS restarted?). Found %d peripherals, and connected to %@ with identifier %@" = "Bluetooth State restored (APS restarted?). Found %d peripherals, and connected to %@ with identifier %@";
 
 /* Shared app group */
-"Shared app group" = "Shared app group";
+"Shared app group for direct connection with Libre 1 transmitters or European Libre 2 sensors" = "Shared app group for direct connection with Libre 1 transmitters or European Libre 2 sensors";
 
 /* Native G6 app */
 "Native G6 app" = "Native G6 app";
@@ -928,7 +931,7 @@ Enact a temp Basal or a temp target */
 "Simple simulator" = "Simple simulator";
 
 /* Direct connection with Libre 1 transmitters or Libre 2 */
-"Direct connection with Libre 1 transmitters or Libre 2" = "Direct connection with Libre 1 transmitters or Libre 2";
+"Direct connection with Libre 1 transmitters or European Libre 2 sensors" = "Direct connection with Libre 1 transmitters or European Libre 2 sensors";
 
 /* Online or internal server */
 "Online or internal server" = "Online or internal server";
