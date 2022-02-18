@@ -62,7 +62,7 @@ struct Preferences: JSON {
     var bgBrakeISFweight: Decimal = 0
     var enableBGacceleration: Bool = false
 
-    var middlewareTDD: Decimal = 30
+    var middlewareTDD: Decimal = 0
     var middlewareAdjustment: Decimal = 1
     var middlewareC: Decimal = 0
 }
