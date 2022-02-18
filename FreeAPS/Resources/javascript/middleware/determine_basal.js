@@ -6,11 +6,11 @@ function middleware(iob, currenttemp, glucose, profile, autosens, meal, reservoi
     if (!BG) {
         return "Middleware: No valid BG"
     }
-    const TDD = profile.middleware_tdd || 30;
+    const TDD = middlewareSettings.middleware_tdd || 30;
     if (!TDD || TDD <= 0) {
         return "Middleware: TDD <= 0 - disabled"
     }
-    const adjustmentFactor = profile.middleware_adj || 1.0;
+    const adjustmentFactor = middlewareSettings.middleware_adj || 1.0;
     const newIsf = (277700 / (adjustmentFactor  * TDD * BG));
     const profileIsf = profile.sens;
     const newAutosensRatio = Math.max(profile.autosens_min, Math.min(profile.autosens_max, profileIsf / newIsf));
