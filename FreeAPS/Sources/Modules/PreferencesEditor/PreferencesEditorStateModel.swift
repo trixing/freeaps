@@ -569,6 +569,36 @@ extension PreferencesEditor {
                 )
             ]
 
+            let middlewareConfig = [
+                Field(
+                    displayName: "Middleware Config TDD",
+                    type: .decimal(keypath: \.middlewareTDD),
+                    infoText: NSLocalizedString(
+                        "Experimental Value TDD for middleware use.",
+                        comment: "Middleware TDD"
+                    ),
+                    settable: self
+                ),
+                Field(
+                    displayName: "Middleware Config Adjustment",
+                    type: .decimal(keypath: \.middlewareAdjustment),
+                    infoText: NSLocalizedString(
+                        "Experimental Value Adjustment for middleware use.",
+                        comment: "Middleware Adjustment"
+                    ),
+                    settable: self
+                ),
+                Field(
+                    displayName: "Middleware Config C",
+                    type: .decimal(keypath: \.middlewareC),
+                    infoText: NSLocalizedString(
+                        "Experimental Value C for middleware use.",
+                        comment: "Middleware C"
+                    ),
+                    settable: self
+                )
+            ]
+
             sections = [
                 FieldSection(
                     displayName: NSLocalizedString("OpenAPS main settings", comment: "OpenAPS main settings"), fields: mainFields
@@ -613,6 +643,13 @@ extension PreferencesEditor {
                         comment: "Experimental settings for autoISF 2.1"
                     ),
                     fields: xpmPostPrandial
+                ),
+                FieldSection(
+                    displayName: NSLocalizedString(
+                        "Middleware Config",
+                        comment: "Middleware Config"
+                    ),
+                    fields: middlewareConfig
                 )
             ]
         }

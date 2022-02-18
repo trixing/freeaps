@@ -7,6 +7,7 @@ extension PumpSettingsEditor {
         @Published var dia: Decimal = 0.0
 
         @Published var syncInProgress = false
+        @Published var readInProgress = false
 
         override func subscribe() {
             let settings = provider.settings()

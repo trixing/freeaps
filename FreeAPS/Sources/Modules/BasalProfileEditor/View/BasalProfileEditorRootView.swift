@@ -35,18 +35,18 @@ extension BasalProfileEditor {
                         label: {
                             Text(state.syncInProgress ? "Saving..." : "Save on Pump")
                         }
-                        .disabled(state.syncInProgress || state.items.isEmpty)
+                        .disabled(state.readInProgress || state.syncInProgress || state.items.isEmpty)
                     }
 
                     HStack {
-                        if state.syncInProgress {
+                        if state.readInProgress {
                             ProgressView().padding(.trailing, 10)
                         }
                         Button { state.read() }
                         label: {
-                            Text(state.syncInProgress ? "Readimg..." : "Read from Pump")
+                            Text(state.readInProgress ? "Reading..." : "Read from Pump")
                         }
-                        .disabled(state.syncInProgress || state.items.isEmpty)
+                        .disabled(state.readInProgress || state.syncInProgress || state.items.isEmpty)
                     }
                 }
             }
