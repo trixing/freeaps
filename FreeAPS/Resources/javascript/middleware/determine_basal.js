@@ -2,15 +2,22 @@ function middleware(iob, currenttemp, glucose, profile, autosens, meal, reservoi
     // modify anything
     // return any reason what has changed.
     const hours = clock.getHours();
+    const preferences = middlewareSettings.preferences;
+    const stats = middlewareSettings.stats;
+
     const BG = glucose[0].glucose;
     if (!BG) {
         return "Middleware: No valid BG"
     }
-    const TDD = middlewareSettings.middleware_tdd || 30;
+    var TDD = preferences.middleware_tdd || 30;
     if (!TDD || TDD <= 0) {
         return "Middleware: TDD <= 0 - disabled"
     }
-    const adjustmentFactor = middlewareSettings.middleware_adj || 1.0;
+    if (stats.tdd && stats.tdd.yesterday > 0) {
+        console.log("Using TDD from stats service: " + stats.tdd.yesterday);
+        TDD = stats.tdd.yesterday;
+    }
+    const adjustmentFactor = preferences.middleware_adj || 1.0;
     const newIsf = (277700 / (adjustmentFactor  * TDD * BG));
     const profileIsf = profile.sens;
     const newAutosensRatio = Math.max(profile.autosens_min, Math.min(profile.autosens_max, profileIsf / newIsf));

@@ -6,7 +6,8 @@ function generate(iob, currenttemp, glucose, profile, autosens = null, meal = nu
         clock = new Date(); // Date object from swift doesn't work
     }
     try {
-        console.log("Middleware settings: %o", middleware_settings);
+        console.log("Middleware settings:");
+        console.log(middleware_settings);
         var middlewareReason = middleware(iob, currenttemp, glucose, profile, autosens, meal, reservoir, clock, middleware_settings);
         console.log("Middleware reason: " + (middlewareReason || "Nothing changed"));
     } catch (error) {

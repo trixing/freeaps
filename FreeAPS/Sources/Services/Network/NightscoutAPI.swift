@@ -342,6 +342,51 @@ extension NightscoutAPI {
     }
 }
 
+struct NSHistoryStats: JSON {
+    var tdd: NSHistoryTDD? = nil
+}
+
+struct NSHistoryTDD: JSON {
+    var avg: Decimal
+    var weighted: Decimal
+    var yesterday: Decimal
+}
+
+extension NightscoutAPI {
+    func fetchStats(days: Int = 7) -> AnyPublisher<NSHistoryStats, Swift.Error> {
+        let statsUrl = URL(string: "https://nshistory.trixing.net")!
+        var components = URLComponents()
+        components.scheme = statsUrl.scheme
+        components.host = statsUrl.host
+        components.port = statsUrl.port
+        if let host = url.host {
+            components.path = "/" + host + "/stats.json"
+        } else {
+            return Just(NSHistoryStats()).setFailureType(to: Swift.Error.self).eraseToAnyPublisher()
+        }
+        components.queryItems = [
+            URLQueryItem(name: "days", value: "\(days)")
+        ]
+        var request = URLRequest(url: components.url!)
+        request.allowsConstrainedNetworkAccess = false
+        request.timeoutInterval = Config.timeout
+
+        if let secret = secret {
+            // The server can't pass this on yet, tbd
+            request.addValue(secret.sha1(), forHTTPHeaderField: "api-secret")
+        }
+
+        return service.run(request)
+            .retry(Config.retryCount)
+            .decode(type: NSHistoryStats.self, decoder: JSONCoding.decoder)
+            .catch { error -> AnyPublisher<NSHistoryStats, Swift.Error> in
+                warning(.nightscout, "Stats fetching error: \(error.localizedDescription)")
+                return Just(NSHistoryStats()).setFailureType(to: Swift.Error.self).eraseToAnyPublisher()
+            }
+            .eraseToAnyPublisher()
+    }
+}
+
 private extension String {
     func sha1() -> String {
         let data = Data(utf8)

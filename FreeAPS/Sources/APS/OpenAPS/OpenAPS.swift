@@ -56,6 +56,11 @@ final class OpenAPS {
                 let reservoir = self.loadFileFromStorage(name: Monitor.reservoir)
 
                 let preferences = self.loadFileFromStorage(name: Settings.preferences)
+                let stats = self.loadFileFromStorage(name: NSHistory.stats)
+                struct T: JSON {
+                    let preferences: RawJSON
+                    let stats: RawJSON
+                }
 
                 let suggested = self.determineBasal(
                     glucose: glucose,
@@ -66,7 +71,7 @@ final class OpenAPS {
                     meal: meal,
                     microBolusAllowed: true,
                     reservoir: reservoir,
-                    middlewareSettings: preferences
+                    middlewareSettings: T(preferences: preferences, stats: stats)
                 )
                 debug(.openAPS, "SUGGESTED: \(suggested)")
 
@@ -405,9 +410,9 @@ final class OpenAPS {
     }
 
     private func middlewareScript(name: String) -> Script? {
-        if let body = storage.retrieveRaw(name) {
-            return Script(name: "Middleware", body: body)
-        }
+        // if let body = storage.retrieveRaw(name) {
+        //     return Script(name: "Middleware", body: body)
+        // }
 
         if let url = Foundation.Bundle.main.url(forResource: "javascript/\(name)", withExtension: "") {
             return Script(name: "Middleware", body: try! String(contentsOf: url))

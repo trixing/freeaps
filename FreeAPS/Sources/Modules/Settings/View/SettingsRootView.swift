@@ -113,6 +113,10 @@ extension Settings {
                             Text("Edit settings json")
                                 .navigationLink(to: .configEditor(file: OpenAPS.FreeAPS.settings), from: self)
                         }
+                        Group {
+                            Text("Stats Service")
+                                .navigationLink(to: .configEditor(file: OpenAPS.NSHistory.stats), from: self)
+                        }
                     }
                 }
 
