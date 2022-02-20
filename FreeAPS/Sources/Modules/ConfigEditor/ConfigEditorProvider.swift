@@ -22,5 +22,9 @@ extension ConfigEditor {
             }
             storage.save(value, as: file)
         }
+
+        func remove(file: String) {
+            storage.remove(file)
+        }
     }
 }
