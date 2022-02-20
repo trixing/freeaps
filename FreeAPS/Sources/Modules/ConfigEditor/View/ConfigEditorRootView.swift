@@ -9,35 +9,40 @@ extension ConfigEditor {
         @State private var showShareSheet = false
 
         var body: some View {
-            TextEditor(text: $state.configText)
-                .keyboardType(.asciiCapable)
-                .font(.system(.subheadline, design: .monospaced))
-                .allowsTightening(true)
-                .autocapitalization(.none)
-                .disableAutocorrection(true)
-                .toolbar {
-                    ToolbarItemGroup(placement: .bottomBar) {
-                        Spacer()
-                        Button { showShareSheet = true }
-                        label: {
-                            Image(systemName: "square.and.arrow.up")
+            VStack {
+                TextEditor(text: $state.configText)
+                    .keyboardType(.asciiCapable)
+                    .font(.system(.subheadline, design: .monospaced))
+                    .allowsTightening(true)
+                    .autocapitalization(.none)
+                    .disableAutocorrection(true)
+                    .toolbar {
+                        ToolbarItemGroup(placement: .bottomBar) {
+                            Spacer()
+                            Button { showShareSheet = true }
+                            label: {
+                                Image(systemName: "square.and.arrow.up")
+                            }
                         }
                     }
-                }
-                .navigationBarItems(
-                    trailing: Button("Save", action: state.save)
-                )
-                .sheet(isPresented: $showShareSheet) {
-                    ShareSheet(activityItems: [state.provider.urlFor(file: state.file)!])
-                }
-                .onAppear {
-                    configureView {
-                        state.file = file
+                    .navigationBarItems(
+                        trailing: Button("Save", action: state.save)
+                    )
+                    .sheet(isPresented: $showShareSheet) {
+                        ShareSheet(activityItems: [state.provider.urlFor(file: state.file)!])
                     }
-                }
-                .navigationTitle(file)
-                .navigationBarTitleDisplayMode(.inline)
-                .padding()
+                    .onAppear {
+                        configureView {
+                            state.file = file
+                        }
+                    }
+                    .navigationTitle(file)
+                    .navigationBarTitleDisplayMode(.inline)
+                    .padding()
+
+                Button("Remove/Reset File", action: state.remove)
+                    .foregroundColor(.red)
+            }
         }
     }
 }

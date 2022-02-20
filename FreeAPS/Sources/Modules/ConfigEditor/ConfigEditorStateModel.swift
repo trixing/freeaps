@@ -15,5 +15,11 @@ extension ConfigEditor {
             impactHeavy.impactOccurred()
             provider.save(configText, as: file)
         }
+
+        func remove() {
+            let impactHeavy = UIImpactFeedbackGenerator(style: .heavy)
+            impactHeavy.impactOccurred()
+            provider.remove(file: file)
+        }
     }
 }
