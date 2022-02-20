@@ -10,5 +10,6 @@ final class APSAssembly: Assembly {
         container.register(FetchGlucoseManager.self) { r in BaseFetchGlucoseManager(resolver: r) }
         container.register(FetchTreatmentsManager.self) { r in BaseFetchTreatmentsManager(resolver: r) }
         container.register(FetchAnnouncementsManager.self) { r in BaseFetchAnnouncementsManager(resolver: r) }
+        container.register(FetchStatsManager.self) { r in BaseFetchStatsManager(resolver: r) }
     }
 }

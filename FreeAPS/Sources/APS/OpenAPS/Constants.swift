@@ -92,4 +92,8 @@ extension OpenAPS {
         static let tempTargetsPresets = "freeaps/temptargets_presets.json"
         static let calibrations = "freeaps/calibrations.json"
     }
+
+    enum NSHistory {
+        static let stats = "nshistory/stats.json"
+    }
 }

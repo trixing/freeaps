@@ -3,7 +3,9 @@
 function generate(iob, currenttemp, glucose, profile, autosens = null, meal = null, microbolusAllowed = false, reservoir = null, clock = new Date()) {
 
     try {
-        var middlewareReason = middleware(iob, currenttemp, glucose, profile, autosens, meal, reservoir, clock);
+        console.log("Middleware settings:");
+        console.log(middleware_settings);
+        var middlewareReason = middleware(iob, currenttemp, glucose, profile, autosens, meal, reservoir, clock, middleware_settings);
         console.log("Middleware reason: " + (middlewareReason || "Nothing changed"));
     } catch (error) {
         console.log("Invalid middleware: " + error);
