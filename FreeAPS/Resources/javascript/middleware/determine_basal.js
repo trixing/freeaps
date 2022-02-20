@@ -9,7 +9,7 @@ function middleware(iob, currenttemp, glucose, profile, autosens, meal, reservoi
     if (!BG) {
         return "Middleware: No valid BG"
     }
-    var TDD = preferences.middleware_tdd || 30;
+    var TDD = preferences.middleware_tdd;
     if (!TDD || TDD <= 0) {
         return "Middleware: TDD <= 0 - disabled"
     }
