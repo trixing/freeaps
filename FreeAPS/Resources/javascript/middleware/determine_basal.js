@@ -13,7 +13,7 @@ function middleware(iob, currenttemp, glucose, profile, autosens, meal, reservoi
     if (!TDD || TDD <= 0) {
         return "Middleware: TDD <= 0 - disabled"
     }
-    if (stats.tdd && stats.tdd.yesterday > 0) {
+    if (stats && stats.tdd && stats.tdd.yesterday > 0) {
         console.log("Using TDD from stats service: " + stats.tdd.yesterday);
         TDD = stats.tdd.yesterday;
     }
