@@ -410,9 +410,9 @@ final class OpenAPS {
     }
 
     private func middlewareScript(name: String) -> Script? {
-        // if let body = storage.retrieveRaw(name) {
-        //     return Script(name: "Middleware", body: body)
-        // }
+        if let body = storage.retrieveRaw(name) {
+            return Script(name: "Middleware", body: body)
+        }
 
         if let url = Foundation.Bundle.main.url(forResource: "javascript/\(name)", withExtension: "") {
             return Script(name: "Middleware", body: try! String(contentsOf: url))
