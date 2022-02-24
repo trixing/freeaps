@@ -3,6 +3,7 @@ import SwiftUI
 extension BasalProfileEditor {
     final class StateModel: BaseStateModel<Provider> {
         @Published var syncInProgress = false
+        @Published var readInProgress = false
         @Published var items: [Item] = []
         @Published var autotuneProfile: [BasalProfileEntry?] = []
 
@@ -73,11 +74,11 @@ extension BasalProfileEditor {
         }
 
         func read() {
-            syncInProgress = true
+            readInProgress = true
             provider.readProfile()
                 .receive(on: DispatchQueue.main)
                 .sink { _ in
-                    self.syncInProgress = false
+                    self.readInProgress = false
                     self.subscribe()
                 } receiveValue: {}
                 .store(in: &lifetime)
