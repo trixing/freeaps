@@ -36,7 +36,7 @@ extension Bolus {
                             ).foregroundColor(.secondary)
                         }.contentShape(Rectangle())
                             .onTapGesture {
-                                state.amount = state.inslinRecommended
+                                state.amount = state.inslinRequired
                             }
                         HStack {
                             Text("Insulin recommended")
@@ -73,7 +73,8 @@ extension Bolus {
                             if state.amount > 0 {
                                 Button { state.add() }
                                 label: { Text("Enact bolus") }
-                                    .disabled(state.amount > state.inslinRequired)
+                                    // allow for higher for e.g. superbolus for a fast carb meal
+                                    .disabled(state.amount > 2 * state.inslinRequired)
                             } else {
                                 Button { state.hideModal() } // happens to handle amount = 0 fine
                                 label: { Text("Skip bolus") }
