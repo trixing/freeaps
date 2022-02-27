@@ -87,7 +87,7 @@ extension Bolus {
                                 Button { state.add() }
                                 label: { Text("Enact bolus") }
                                     // allow for higher for e.g. superbolus for a fast carb meal
-                                    .disabled(state.amount > 2*state.inslinRequired)
+                                    .disabled(state.amount > 2 * state.inslinRequired)
                             } else {
                                 Button { state.hideModal() } // happens to handle amount = 0 fine
                                 label: { Text("Skip bolus") }
