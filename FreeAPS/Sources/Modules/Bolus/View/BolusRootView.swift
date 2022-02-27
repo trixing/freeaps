@@ -5,6 +5,8 @@ extension Bolus {
     struct RootView: BaseView {
         let resolver: Resolver
         let waitForSuggestion: Bool
+        let carbsAdded: Decimal
+
         @StateObject var state = StateModel()
         @State private var isAddInsulinAlertPresented = false
 
@@ -19,6 +21,17 @@ extension Bolus {
             Form {
                 // Section(header: Text("Recommendation")) {
                 Section {
+                    if state.carbsAdded > 0 {
+                        HStack {
+                            Text("Carbs Added").foregroundColor(.secondary)
+                            Spacer()
+                            Text(
+                                formatter
+                                    .string(from: state.carbsAdded as NSNumber)! +
+                                    NSLocalizedString(" g", comment: "Carbs unit")
+                            ).foregroundColor(.secondary)
+                        }
+                    }
                     if state.waitForSuggestion {
                         HStack {
                             Text("Wait please").foregroundColor(.secondary)
@@ -74,7 +87,7 @@ extension Bolus {
                                 Button { state.add() }
                                 label: { Text("Enact bolus") }
                                     // allow for higher for e.g. superbolus for a fast carb meal
-                                    .disabled(state.amount > 2 * state.inslinRequired)
+                                    .disabled(state.amount > 2*state.inslinRequired)
                             } else {
                                 Button { state.hideModal() } // happens to handle amount = 0 fine
                                 label: { Text("Skip bolus") }
@@ -115,6 +128,7 @@ extension Bolus {
                 configureView {
                     state.waitForSuggestionInitial = waitForSuggestion
                     state.waitForSuggestion = waitForSuggestion
+                    state.carbsAdded = carbsAdded
                 }
             }
             .navigationTitle("Enact Bolus")

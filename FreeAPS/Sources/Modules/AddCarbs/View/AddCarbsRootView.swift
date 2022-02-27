@@ -44,7 +44,8 @@ extension AddCarbs {
                 Section {
                     Button { state.add() }
                     label: { Text("Add") }
-                        .disabled(state.carbs <= 0 || state.carbs > 99)
+                        // avoid typos like 0.10
+                        .disabled(state.carbs < 1 || state.carbs > 99)
                 }
             }
             .onAppear(perform: configureView)

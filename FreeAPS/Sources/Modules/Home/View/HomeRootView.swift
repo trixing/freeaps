@@ -311,7 +311,7 @@ extension Home {
                             .padding(8)
                     }.foregroundColor(.loopYellow)
                     Spacer()
-                    Button { state.showModal(for: .bolus(waitForSuggestion: false)) }
+                    Button { state.showModal(for: .bolus(waitForSuggestion: false, carbsAdded: 0)) }
                     label: {
                         Image("bolus")
                             .renderingMode(.template)

@@ -11,6 +11,10 @@ extension Bolus {
         @Published var inslinRecommended: Decimal = 0
         @Published var inslinRequired: Decimal = 0
         @Published var waitForSuggestion: Bool = false
+        @Published var carbsAdded: Decimal = 0
+        @Published var carbsInsulinRequired: Decimal = 0
+        @Published var carbsInsulinRecommended: Decimal = 0
+
         var waitForSuggestionInitial: Bool = false
 
         override func subscribe() {
@@ -67,11 +71,60 @@ extension Bolus {
             showModal(for: nil)
         }
 
+        func roundInsulin(_ insulin: Decimal) -> Decimal {
+            Decimal(Double(insulin * 10) / 10)
+        }
+
+        func carbRequired() -> Decimal {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "hh:mm"
+            let now = dateFormatter.string(from: Date())
+            var ratio: Decimal = 0
+            for cr in provider.carbRatios.schedule {
+                if cr.start <= now {
+                    ratio = cr.ratio
+                }
+            }
+            if ratio <= 0 {
+                return 0
+            }
+            let req = roundInsulin(carbsAdded / ratio)
+            NSLog("carbRequired Now \(now) \(ratio) \(req)")
+            return max(0, req)
+        }
+
+        func carbRecommended() -> Decimal? {
+            if carbsAdded <= 0 {
+                return nil
+            }
+            let iob = provider.suggestion?.iob ?? 0
+            // Safety values should be configurable
+            if let bg = provider.suggestion?.bg, bg < 70 {
+                return nil
+            }
+            let required = carbRequired()
+            // The ratio should be configurable
+            // The logic here is that we trust any carbs entered to be
+            // somewhat correct. We err on the side of caution, substract iob, no matter the cob
+            // (so this will always underpredict).
+            // The target use case is aggressive pre-bolus for big meals with low bg.
+            let recommendation = max(0, 0.7 * (required - iob))
+            NSLog("carbRecommended Now \(iob) \(required) \(recommendation)")
+            return roundInsulin(recommendation)
+        }
+
         func setupInsulinRequired() {
             DispatchQueue.main.async {
-                self.inslinRequired = self.provider.suggestion?.insulinReq ?? 0
+                self.carbsInsulinRequired = self.carbRequired()
+                self.carbsInsulinRecommended = self.carbRecommended() ?? 0
+
+                self.inslinRequired = self.roundInsulin(max(self.provider.suggestion?.insulinReq ?? 0, self.carbsInsulinRequired))
+                let orefRecommended = max(self.inslinRequired * self.settingsManager.settings.insulinReqFraction, 0)
                 self.inslinRecommended = self.apsManager
-                    .roundBolus(amount: max(self.inslinRequired * self.settingsManager.settings.insulinReqFraction, 0))
+                    .roundBolus(amount: max(
+                        orefRecommended,
+                        self.carbsInsulinRequired * self.settingsManager.settings.insulinReqFraction
+                    ))
                 self.amount = self.inslinRecommended
             }
         }
