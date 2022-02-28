@@ -26,14 +26,14 @@ extension Bolus {
                             Text(
                                 formatter
                                     .string(from: state.carbsAdded as NSNumber)! +
-                                    NSLocalizedString(" g", comment: "Carbs unit") + " Carbs"
-                            ).foregroundColor(.secondary)
+                                    NSLocalizedString(" g", comment: "Carbs unit") + " carbs"
+                            )
                             Spacer()
                             Text(
                                 formatter
                                     .string(from: state.carbsInsulinRequired as NSNumber)! +
                                     NSLocalizedString(" U", comment: "Insulin unit")
-                            ).foregroundColor(.secondary)
+                            )
                         }
                     }
                     if state.waitForSuggestion {
@@ -43,18 +43,20 @@ extension Bolus {
                             ActivityIndicator(isAnimating: .constant(true), style: .medium) // fix iOS 15 bug
                         }
                     } else {
-                        HStack {
-                            Text("Insulin required").foregroundColor(.secondary)
-                            Spacer()
-                            Text(
-                                formatter
-                                    .string(from: state.inslinRequired as NSNumber)! +
-                                    NSLocalizedString(" U", comment: "Insulin unit")
-                            ).foregroundColor(.secondary)
-                        }.contentShape(Rectangle())
-                            .onTapGesture {
-                                state.amount = state.inslinRequired
-                            }
+                        if state.carbsAdded == 0 {
+                            HStack {
+                                Text("Insulin required").foregroundColor(.secondary)
+                                Spacer()
+                                Text(
+                                    formatter
+                                        .string(from: state.inslinRequired as NSNumber)! +
+                                        NSLocalizedString(" U", comment: "Insulin unit")
+                                ).foregroundColor(.secondary)
+                            }.contentShape(Rectangle())
+                                .onTapGesture {
+                                    state.amount = state.inslinRequired
+                                }
+                        }
                         HStack {
                             Text("Insulin recommended")
                             Spacer()
@@ -91,10 +93,10 @@ extension Bolus {
                                 Button { state.add() }
                                 label: { Text("Enact bolus") }
                                     // allow for higher for e.g. superbolus for a fast carb meal
-                                    .disabled(state.amount > 2 * state.inslinRequired)
+                                    .disabled(state.amount > max(2 * state.inslinRequired, state.carbsInsulinRequired))
                             } else {
                                 Button { state.hideModal() } // happens to handle amount = 0 fine
-                                label: { Text("Skip bolus") }
+                                label: { Text("No bolus necessary") }
                             }
                             Spacer()
                         }

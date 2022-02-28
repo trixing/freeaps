@@ -39,13 +39,12 @@ extension AddCarbs {
                         Text("In 15 min").tag(TimeInterval(minutes: 15))
                     }
                     .pickerStyle(.segmented)
-                }
-
-                Section {
-                    Button { state.add() }
-                    label: { Text("Add") }
-                        // avoid typos like 0.10
-                        .disabled(state.carbs < 1 || state.carbs > 99)
+                    HStack {
+                        Button { state.add() }
+                        label: { Text("Add") }
+                            // avoid typos like 0.10
+                            .disabled(state.carbs < 1 || state.carbs > 99)
+                    }
                 }
             }
             .onAppear(perform: configureView)
