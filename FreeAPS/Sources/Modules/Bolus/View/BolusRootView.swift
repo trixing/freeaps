@@ -23,12 +23,16 @@ extension Bolus {
                 Section {
                     if state.carbsAdded > 0 {
                         HStack {
-                            Text("Carbs Added").foregroundColor(.secondary)
-                            Spacer()
                             Text(
                                 formatter
                                     .string(from: state.carbsAdded as NSNumber)! +
-                                    NSLocalizedString(" g", comment: "Carbs unit")
+                                    NSLocalizedString(" g", comment: "Carbs unit") + " Carbs"
+                            ).foregroundColor(.secondary)
+                            Spacer()
+                            Text(
+                                formatter
+                                    .string(from: state.carbsInsulinRequired as NSNumber)! +
+                                    NSLocalizedString(" U", comment: "Insulin unit")
                             ).foregroundColor(.secondary)
                         }
                     }
@@ -58,7 +62,7 @@ extension Bolus {
                                 formatter
                                     .string(from: state.inslinRecommended as NSNumber)! +
                                     NSLocalizedString(" U", comment: "Insulin unit")
-                            ).foregroundColor(.secondary)
+                            )
                         }.contentShape(Rectangle())
                             .onTapGesture {
                                 state.amount = state.inslinRecommended

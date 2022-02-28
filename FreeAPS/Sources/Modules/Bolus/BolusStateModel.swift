@@ -77,7 +77,7 @@ extension Bolus {
 
         func carbRequired() -> Decimal {
             let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "hh:mm"
+            dateFormatter.dateFormat = "HH:mm"
             let now = dateFormatter.string(from: Date())
             var ratio: Decimal = 0
             for cr in provider.carbRatios.schedule {
@@ -93,7 +93,7 @@ extension Bolus {
             return max(0, req)
         }
 
-        func carbRecommended() -> Decimal? {
+        func carbRecommended(_ required: Decimal) -> Decimal? {
             if carbsAdded <= 0 {
                 return nil
             }
@@ -102,7 +102,6 @@ extension Bolus {
             if let bg = provider.suggestion?.bg, bg < 70 {
                 return nil
             }
-            let required = carbRequired()
             // The ratio should be configurable
             // The logic here is that we trust any carbs entered to be
             // somewhat correct. We err on the side of caution, substract iob, no matter the cob
@@ -116,14 +115,17 @@ extension Bolus {
         func setupInsulinRequired() {
             DispatchQueue.main.async {
                 self.carbsInsulinRequired = self.carbRequired()
-                self.carbsInsulinRecommended = self.carbRecommended() ?? 0
+                self.carbsInsulinRecommended = self.carbRecommended(self.carbsInsulinRequired) ?? 0
+                let orefRequired = self.roundInsulin(self.provider.suggestion?.insulinReq ?? 0)
+                let orefRecommended = self.roundInsulin(max(orefRequired * self.settingsManager.settings.insulinReqFraction, 0))
 
-                self.inslinRequired = self.roundInsulin(max(self.provider.suggestion?.insulinReq ?? 0, self.carbsInsulinRequired))
-                let orefRecommended = max(self.inslinRequired * self.settingsManager.settings.insulinReqFraction, 0)
+                self.inslinRequired = orefRequired
+
+                NSLog("Oref Recommended \(orefRecommended) U carbsInsulinRecommended \(self.carbsInsulinRecommended) U")
                 self.inslinRecommended = self.apsManager
                     .roundBolus(amount: max(
                         orefRecommended,
-                        self.carbsInsulinRequired * self.settingsManager.settings.insulinReqFraction
+                        self.carbsInsulinRecommended
                     ))
                 self.amount = self.inslinRecommended
             }
