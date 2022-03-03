@@ -25,6 +25,10 @@ struct TempTarget: JSON, Identifiable, Equatable, Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(createdAt)
     }
+
+    func remaining() -> TimeInterval {
+        max(0, TimeInterval(minutes: Double(duration)) + createdAt.timeIntervalSinceNow)
+    }
 }
 
 extension TempTarget {

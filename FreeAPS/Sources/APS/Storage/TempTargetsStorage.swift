@@ -14,6 +14,7 @@ protocol TempTargetsStorage {
     func storePresets(_ targets: [TempTarget])
     func presets() -> [TempTarget]
     func current() -> TempTarget?
+    func cancel()
 }
 
 final class BaseTempTargetsStorage: TempTargetsStorage, Injectable {
@@ -23,6 +24,19 @@ final class BaseTempTargetsStorage: TempTargetsStorage, Injectable {
 
     init(resolver: Resolver) {
         injectServices(resolver)
+    }
+
+    func cancel() {
+        let entry = TempTarget(
+            name: TempTarget.cancel,
+            createdAt: Date(),
+            targetTop: 0,
+            targetBottom: 0,
+            duration: 0,
+            enteredBy: TempTarget.manual,
+            reason: TempTarget.cancel
+        )
+        storeTempTargets([entry])
     }
 
     func storeTempTargets(_ targets: [TempTarget]) {

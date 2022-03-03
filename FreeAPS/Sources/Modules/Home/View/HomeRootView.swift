@@ -151,46 +151,55 @@ extension Home {
                 }
 
                 if let tempTarget = state.tempTarget {
-                    Text(tempTarget.displayName).font(font).foregroundColor(.secondary)
-                    if state.units == .mmolL {
-                        Text(
-                            targetFormatter
-                                .string(from: (tempTarget.targetBottom?.asMmolL ?? 0) as NSNumber)!
-                        )
-                        .font(font)
-                        .foregroundColor(.secondary)
-                        if tempTarget.targetBottom != tempTarget.targetTop {
-                            Text("-").font(font)
-                                .foregroundColor(.secondary)
+                    HStack {
+                        Text(tempTarget.displayName).font(font).foregroundColor(.secondary)
+                        if state.units == .mmolL {
                             Text(
                                 targetFormatter
-                                    .string(from: (tempTarget.targetTop?.asMmolL ?? 0) as NSNumber)! +
-                                    " \(state.units.rawValue)"
+                                    .string(from: (tempTarget.targetBottom?.asMmolL ?? 0) as NSNumber)!
                             )
                             .font(font)
                             .foregroundColor(.secondary)
-                        } else {
-                            Text(state.units.rawValue).font(font)
+                            if tempTarget.targetBottom != tempTarget.targetTop {
+                                Text("-").font(font)
+                                    .foregroundColor(.secondary)
+                                Text(
+                                    targetFormatter
+                                        .string(from: (tempTarget.targetTop?.asMmolL ?? 0) as NSNumber)! +
+                                        " \(state.units.rawValue)"
+                                )
+                                .font(font)
                                 .foregroundColor(.secondary)
-                        }
+                            } else {
+                                Text(state.units.rawValue).font(font)
+                                    .foregroundColor(.secondary)
+                            }
 
-                    } else {
-                        Text(targetFormatter.string(from: (tempTarget.targetBottom ?? 0) as NSNumber)!)
-                            .font(font)
-                            .foregroundColor(.secondary)
-                        if tempTarget.targetBottom != tempTarget.targetTop {
-                            Text("-").font(font)
-                                .foregroundColor(.secondary)
-                            Text(
-                                targetFormatter
-                                    .string(from: (tempTarget.targetTop ?? 0) as NSNumber)! + " \(state.units.rawValue)"
-                            )
-                            .font(font)
-                            .foregroundColor(.secondary)
                         } else {
-                            Text(state.units.rawValue).font(font)
+                            Text(targetFormatter.string(from: (tempTarget.targetBottom ?? 0) as NSNumber)!)
+                                .font(font)
                                 .foregroundColor(.secondary)
+                            if tempTarget.targetBottom != tempTarget.targetTop {
+                                Text("-").font(font)
+                                    .foregroundColor(.secondary)
+                                Text(
+                                    targetFormatter
+                                        .string(from: (tempTarget.targetTop ?? 0) as NSNumber)! + " \(state.units.rawValue)"
+                                )
+                                .font(font)
+                                .foregroundColor(.secondary)
+                            } else {
+                                Text(state.units.rawValue).font(font)
+                                    .foregroundColor(.secondary)
+                            }
                         }
+                        let minutesRemaining = Int(round(tempTarget.remaining() / 60))
+                        Text("\(minutesRemaining) min left")
+                            .font(Font.system(size: 12))
+                            .foregroundColor(.secondary)
+                    }
+                    .onTapGesture {
+                        state.cancelTempTarget()
                     }
                 }
                 Spacer()

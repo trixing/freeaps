@@ -175,6 +175,10 @@ extension Home {
             apsManager.cancelBolus()
         }
 
+        func cancelTempTarget() {
+            apsManager.cancelTempTarget()
+        }
+
         private func setupGlucose() {
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
