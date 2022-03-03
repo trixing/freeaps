@@ -24,6 +24,7 @@ protocol APSManager {
     func roundBolus(amount: Decimal) -> Decimal
     var lastError: CurrentValueSubject<Error?, Never> { get }
     func cancelBolus()
+    func cancelTempTarget()
     func enactAnnouncement(_ announcement: Announcement)
 }
 
@@ -374,6 +375,10 @@ final class BaseAPSManager: APSManager, Injectable {
             self.bolusProgress.send(nil)
         } receiveValue: { _ in }
             .store(in: &lifetime)
+    }
+
+    func cancelTempTarget() {
+        tempTargetsStorage.cancel()
     }
 
     func enactTempBasal(rate: Double, duration: TimeInterval) {
