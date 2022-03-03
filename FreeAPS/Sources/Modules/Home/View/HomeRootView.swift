@@ -135,9 +135,11 @@ extension Home {
 
         var infoPanal: some View {
             HStack(alignment: .center) {
+                let font = Font.system(size: 18, weight: .bold)
+
                 if state.pumpSuspended {
                     Text("Pump suspended")
-                        .font(.system(size: 12, weight: .bold)).foregroundColor(.loopGray)
+                        .font(font).foregroundColor(.loopGray)
                         .padding(.leading, 8)
                 } else if let tempRate = state.tempRate {
                     Text(
@@ -149,44 +151,44 @@ extension Home {
                 }
 
                 if let tempTarget = state.tempTarget {
-                    Text(tempTarget.displayName).font(.caption).foregroundColor(.secondary)
+                    Text(tempTarget.displayName).font(font).foregroundColor(.secondary)
                     if state.units == .mmolL {
                         Text(
                             targetFormatter
                                 .string(from: (tempTarget.targetBottom?.asMmolL ?? 0) as NSNumber)!
                         )
-                        .font(.caption)
+                        .font(font)
                         .foregroundColor(.secondary)
                         if tempTarget.targetBottom != tempTarget.targetTop {
-                            Text("-").font(.caption)
+                            Text("-").font(font)
                                 .foregroundColor(.secondary)
                             Text(
                                 targetFormatter
                                     .string(from: (tempTarget.targetTop?.asMmolL ?? 0) as NSNumber)! +
                                     " \(state.units.rawValue)"
                             )
-                            .font(.caption)
+                            .font(font)
                             .foregroundColor(.secondary)
                         } else {
-                            Text(state.units.rawValue).font(.caption)
+                            Text(state.units.rawValue).font(font)
                                 .foregroundColor(.secondary)
                         }
 
                     } else {
                         Text(targetFormatter.string(from: (tempTarget.targetBottom ?? 0) as NSNumber)!)
-                            .font(.caption)
+                            .font(font)
                             .foregroundColor(.secondary)
                         if tempTarget.targetBottom != tempTarget.targetTop {
-                            Text("-").font(.caption)
+                            Text("-").font(font)
                                 .foregroundColor(.secondary)
                             Text(
                                 targetFormatter
                                     .string(from: (tempTarget.targetTop ?? 0) as NSNumber)! + " \(state.units.rawValue)"
                             )
-                            .font(.caption)
+                            .font(font)
                             .foregroundColor(.secondary)
                         } else {
-                            Text(state.units.rawValue).font(.caption)
+                            Text(state.units.rawValue).font(font)
                                 .foregroundColor(.secondary)
                         }
                     }
