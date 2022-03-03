@@ -56,7 +56,7 @@ extension Home {
         }
 
         var cobIobView: some View {
-            VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: 2) {
                 HStack {
                     Text("IOB").font(.caption2).foregroundColor(.secondary)
                     Text(
@@ -70,6 +70,14 @@ extension Home {
                     Text(
                         (numberFormatter.string(from: (state.suggestion?.cob ?? 0) as NSNumber) ?? "0") +
                             NSLocalizedString(" g", comment: "gram of carbs")
+                    )
+                    .font(.system(size: 12, weight: .bold))
+                }
+                HStack {
+                    Text("Sens").font(.caption2).foregroundColor(.secondary)
+                    Text(
+                        (numberFormatter.string(from: (state.suggestion?.sensitivityRatio ?? 0) as NSNumber) ?? "?") +
+                            NSLocalizedString("x", comment: "sensitivity ratio")
                     )
                     .font(.system(size: 12, weight: .bold))
                 }
