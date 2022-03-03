@@ -8,8 +8,16 @@ function middleware(iob, currenttemp, glucose, profile, autosens, meal, reservoi
     const preferences = middlewareSettings.preferences;
     const stats = middlewareSettings.stats;
     if (stats.tdd && stats.tdd.weighted > 0) {
-        console.log("Using weighted TDD from stats service: " + stats.tdd.weighted);
-        TDD = stats.tdd.weighted;
+        var newTDD = stats.tdd.weighted;
+        // some safety limits
+        if ((newTDD > 0.5*TDD) && (newTDD < 2*TDD)) {
+            console.log("Using weighted TDD from stats service: " + newTDD);
+
+            TDD = newTDD;
+        } else {
+            console.log("Weighted TDD out of bounds: " + newTDD);
+            return "Middleware, weighted TDD out of bounds: " + newTDD;
+        }
     }
 
     const bg = glucose[0].glucose;
