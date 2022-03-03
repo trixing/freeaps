@@ -1,11 +1,15 @@
 //для enact/smb-suggested.json параметры: monitor/iob.json monitor/temp_basal.json monitor/glucose.json settings/profile.json settings/autosens.json --meal monitor/meal.json --microbolus --reservoir monitor/reservoir.json
 
-function generate(iob, currenttemp, glucose, profile, autosens = null, meal = null, microbolusAllowed = false, reservoir = null, clock = new Date()) {
+function generate(iob, currenttemp, glucose, profile, autosens = null, meal = null, microbolusAllowed = false, reservoir = null, clock = new Date(),
+                  middlewareSettings = null) {
 
+    if (!clock) {
+        clock = new Date();
+    }
     try {
         console.log("Middleware settings:");
-        console.log(middleware_settings);
-        var middlewareReason = middleware(iob, currenttemp, glucose, profile, autosens, meal, reservoir, clock, middleware_settings);
+        console.log(middlewareSettings);
+        var middlewareReason = middleware(iob, currenttemp, glucose, profile, autosens, meal, reservoir, clock, middlewareSettings);
         console.log("Middleware reason: " + (middlewareReason || "Nothing changed"));
     } catch (error) {
         console.log("Invalid middleware: " + error);

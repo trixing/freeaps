@@ -298,7 +298,8 @@ final class OpenAPS {
         autosens: JSON,
         meal: JSON,
         microBolusAllowed: Bool,
-        reservoir: JSON
+        reservoir: JSON,
+        middlewareSettings: JSON
     ) -> RawJSON {
         dispatchPrecondition(condition: .onQueue(processQueue))
         return jsWorker.inCommonContext { worker in
@@ -322,7 +323,9 @@ final class OpenAPS {
                     autosens,
                     meal,
                     microBolusAllowed,
-                    reservoir
+                    reservoir,
+                    false,
+                    middlewareSettings
                 ]
             )
         }
