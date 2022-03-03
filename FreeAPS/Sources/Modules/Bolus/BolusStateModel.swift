@@ -122,8 +122,7 @@ extension Bolus {
                 self.inslinRequired = orefRequired
 
                 NSLog("Oref Recommended \(orefRecommended) U carbsInsulinRecommended \(self.carbsInsulinRecommended) U")
-                self.inslinRecommended = self.apsManager
-                    .roundBolus(amount: max(
+                self.inslinRecommended = self.roundInsulin(max(
                         orefRecommended,
                         self.carbsInsulinRecommended
                     ))
