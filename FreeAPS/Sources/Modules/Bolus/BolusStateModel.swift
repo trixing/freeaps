@@ -1,6 +1,15 @@
 import SwiftUI
 import Swinject
 
+private extension Decimal {
+    func rounded(_ places: Int = 0) -> Decimal {
+        var inp = self
+        var res = Decimal()
+        NSDecimalRound(&res, &inp, places, .plain)
+        return res
+    }
+}
+
 extension Bolus {
     final class StateModel: BaseStateModel<Provider> {
         @Injected() var unlockmanager: UnlockManager!
@@ -72,7 +81,7 @@ extension Bolus {
         }
 
         func roundInsulin(_ insulin: Decimal) -> Decimal {
-            Decimal(Double(insulin * 10) / 10)
+            insulin.rounded(1)
         }
 
         func carbRequired() -> Decimal {
