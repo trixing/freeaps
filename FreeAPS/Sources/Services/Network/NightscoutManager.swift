@@ -388,6 +388,44 @@ final class BaseNightscoutManager: NightscoutManager, Injectable {
             units: nsUnits
         )
         let defaultProfile = "default"
+        let autotuneProfile = "autotune"
+        var store = [defaultProfile: ps]
+        if let autotune = storage.retrieve(OpenAPS.Settings.autotune, as: Autotune.self), settingsManager.settings.useAutotune {
+            let autotune_basal = autotune.basalProfile.map { item -> NightscoutTimevalue in
+                NightscoutTimevalue(
+                    time: String(item.start.prefix(5)),
+                    value: item.rate,
+                    timeAsSeconds: item.minutes * 60
+                )
+            }
+            let autotune_cr = [
+                NightscoutTimevalue(
+                    time: "00:00",
+                    value: autotune.carbRatio,
+                    timeAsSeconds: 0
+                )
+            ]
+            let autotune_sens = [
+                NightscoutTimevalue(
+                    time: "00:00",
+                    value: autotune.sensitivity,
+                    timeAsSeconds: 0
+                )
+            ]
+            let autotune_ps = ScheduledNightscoutProfile(
+                dia: settingsManager.pumpSettings.insulinActionCurve,
+                carbs_hr: carbs_hr,
+                delay: 0,
+                timezone: TimeZone.current.identifier,
+                target_low: target_low,
+                target_high: target_high,
+                sens: autotune_sens,
+                basal: autotune_basal,
+                carbratio: autotune_cr,
+                units: nsUnits
+            )
+            store[autotuneProfile] = autotune_ps
+        }
         let now = Date()
         let p = NightscoutProfileStore(
             defaultProfile: defaultProfile,
@@ -395,11 +433,12 @@ final class BaseNightscoutManager: NightscoutManager, Injectable {
             mills: Int(now.timeIntervalSince1970) * 1000,
             units: nsUnits,
             enteredBy: NigtscoutTreatment.local,
-            store: [defaultProfile: ps]
+            store: store
         )
 
         if let uploadedProfile = storage.retrieve(OpenAPS.Nightscout.uploadedProfile, as: NightscoutProfileStore.self),
-           (uploadedProfile.store[defaultProfile]?.rawJSON ?? "") == ps.rawJSON
+           (uploadedProfile.store[defaultProfile]?.rawJSON ?? "") == ps.rawJSON,
+           (uploadedProfile.store[autotuneProfile]?.rawJSON ?? "") == (store[autotuneProfile]?.rawJSON ?? "")
         {
             NSLog("NightscoutManager uploadProfile, no profile change")
             return
