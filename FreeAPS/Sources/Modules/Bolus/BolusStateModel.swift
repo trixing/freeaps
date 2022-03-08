@@ -125,8 +125,17 @@ extension Bolus {
             DispatchQueue.main.async {
                 self.carbsInsulinRequired = self.carbRequired()
                 self.carbsInsulinRecommended = self.carbRecommended(self.carbsInsulinRequired) ?? 0
-                let orefRequired = self.roundInsulin(self.provider.suggestion?.insulinReq ?? 0)
-                let orefRecommended = self.roundInsulin(max(orefRequired * self.settingsManager.settings.insulinReqFraction, 0))
+                var orefRecommended: Decimal = 0
+                var orefRequired: Decimal = 0
+                if let suggestion = self.provider.suggestion, let timestamp = suggestion.timestamp {
+                    if timestamp.timeIntervalSinceNow > 5.minutes.timeInterval {
+                        orefRequired = self.roundInsulin(suggestion.insulinReq ?? 0)
+                        orefRecommended = self
+                            .roundInsulin(max(orefRequired * self.settingsManager.settings.insulinReqFraction, 0))
+                    } else {
+                        NSLog("setupInsulinRequired: Suggestion too old \(timestamp)")
+                    }
+                }
 
                 self.inslinRequired = orefRequired
 
