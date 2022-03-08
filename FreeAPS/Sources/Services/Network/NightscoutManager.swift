@@ -436,12 +436,27 @@ final class BaseNightscoutManager: NightscoutManager, Injectable {
             store: store
         )
 
-        if let uploadedProfile = storage.retrieve(OpenAPS.Nightscout.uploadedProfile, as: NightscoutProfileStore.self),
-           (uploadedProfile.store[defaultProfile]?.rawJSON ?? "") == ps.rawJSON,
-           (uploadedProfile.store[autotuneProfile]?.rawJSON ?? "") == (store[autotuneProfile]?.rawJSON ?? "")
+        if let uploadedProfile = storage.retrieve(OpenAPS.Nightscout.uploadedProfile, as: NightscoutProfileStore.self)
         {
-            NSLog("NightscoutManager uploadProfile, no profile change")
-            return
+            if
+                (uploadedProfile.store[defaultProfile]?.equals(ps) ?? false) &&
+                (
+                    (store[autotuneProfile] == nil) || (
+                        uploadedProfile.store[autotuneProfile]?
+                            .equals(store[autotuneProfile]!) ?? false
+                    )
+                )
+
+            {
+                NSLog("NightscoutManager uploadProfile, no profile change")
+                return
+            }
+            /*
+            print("Remote Profile \(uploadedProfile.store[defaultProfile]?.rawJSON)")
+            print("Local Profile \(ps.rawJSON)")
+            print("Remote Autotune Profile \(uploadedProfile.store[autotuneProfile]?.rawJSON)")
+            print("Local Autotune Profile \(store[autotuneProfile]?.rawJSON)")
+             */
         }
         guard let nightscout = nightscoutAPI, isNetworkReachable, isUploadEnabled else {
             return // Just([]).eraseToAnyPublisher()
