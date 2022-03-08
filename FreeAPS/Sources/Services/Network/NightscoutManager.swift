@@ -452,11 +452,11 @@ final class BaseNightscoutManager: NightscoutManager, Injectable {
                 return
             }
             /*
-            print("Remote Profile \(uploadedProfile.store[defaultProfile]?.rawJSON)")
-            print("Local Profile \(ps.rawJSON)")
-            print("Remote Autotune Profile \(uploadedProfile.store[autotuneProfile]?.rawJSON)")
-            print("Local Autotune Profile \(store[autotuneProfile]?.rawJSON)")
-             */
+             print("Remote Profile \(uploadedProfile.store[defaultProfile]?.rawJSON)")
+             print("Local Profile \(ps.rawJSON)")
+             print("Remote Autotune Profile \(uploadedProfile.store[autotuneProfile]?.rawJSON)")
+             print("Local Autotune Profile \(store[autotuneProfile]?.rawJSON)")
+              */
         }
         guard let nightscout = nightscoutAPI, isNetworkReachable, isUploadEnabled else {
             return // Just([]).eraseToAnyPublisher()
