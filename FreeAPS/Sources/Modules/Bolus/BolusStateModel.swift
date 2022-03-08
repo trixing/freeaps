@@ -128,12 +128,12 @@ extension Bolus {
                 var orefRecommended: Decimal = 0
                 var orefRequired: Decimal = 0
                 if let suggestion = self.provider.suggestion, let timestamp = suggestion.timestamp {
-                    if timestamp.timeIntervalSinceNow > 5.minutes.timeInterval {
+                    if timestamp.timeIntervalSinceNow < 5.minutes.timeInterval {
                         orefRequired = self.roundInsulin(suggestion.insulinReq ?? 0)
                         orefRecommended = self
                             .roundInsulin(max(orefRequired * self.settingsManager.settings.insulinReqFraction, 0))
                     } else {
-                        NSLog("setupInsulinRequired: Suggestion too old \(timestamp)")
+                        NSLog("setupInsulinRequired: Suggestion too old \(timestamp.timeIntervalSinceNow) seconds")
                     }
                 }
 
